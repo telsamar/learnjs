@@ -1,0 +1,97 @@
+h3, h4, .countLabel, .countValue, .elementComponent {
+    text-align: center;
+}
+#mainComponent {
+    display: flex;
+    height: 100vh;
+}
+#menuComponent {
+    flex: 0 0 20%;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+#buttonsComponent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#loadedComponent {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-top: auto;
+}
+#bodyComponent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+#listComponent, #infoComponent {
+    flex-grow: 1;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+#infoComponent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.subComponent {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+}
+.subComponent:last-child {
+    margin-bottom: 0;
+}
+#elementsContainerComponent {
+    overflow-y: auto;
+    height: 200px;
+}
+.elementComponent {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.elementComponent:last-child {
+    margin-bottom: 0;
+}
+.countComponent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+.countLabel, .countValue {
+    padding: 3px 10px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+}
+.countLabel {
+    margin-right: 10px;
+}
+#JSONComponent {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+.selected {
+    background-color: #28a745;
+    color: white;
+}
