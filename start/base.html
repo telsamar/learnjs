@@ -1,69 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Тестовый сайт</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-    </head>
-    
-    <body>
-        <div id="mainComponent">
-            <div id="menuComponent">
-                <div id="buttonsComponent">
-                    <h3>МЕНЮ</h3>
-                    <button type="button" class="btn btn-primary mb-2">Загрузить из файла</button>
-                    <button type="button" class="btn btn-primary mb-2">Загрузить</button>
-                    <button type="button" class="btn btn-primary mb-2">Сохранить</button>
-                    <button type="button" class="btn btn-primary mb-2">Рассчитать</button>
-                </div>
-                <div id="loadedComponent">
-                    <h3>Данные загружены</h3>
-                </div>
-            </div>
-            <div id="bodyComponent">
-                <div id="listComponent">
-                    <h3>Список источников данных</h3>
-                    <div id="URLComponent" class="subComponent">
-                        <h4>Путь к источнику данных</h4>
-                    </div>
-                    <div id="elementsContainerComponent" class="subComponent">
-                        <div class="elementComponent">Источник 1</div>
-                        <div class="elementComponent">Источник 2</div>
-                        <div class="elementComponent">Источник 3</div>
-                        <div class="elementComponent">Источник 4</div>
-                        <div class="elementComponent">Источник 5</div>
-                        <div class="elementComponent">Источник 6</div>
-                        <div class="elementComponent">Источник 7</div>
-                        <div class="elementComponent">Источник 8</div>
-                    </div>
-                    <div id="buttonsContainerComponent" class="subComponent buttons-container">
-                        <button type="button" class="btn btn-primary">Добавить источник</button>
-                        <button type="button" class="btn btn-secondary">Удалить источник</button>
-                        <button type="button" class="btn btn-info">Изменить источник</button>
-                    </div>
-                </div>
-                <div id="infoComponent">
-                    <h3>Информация</h3>
-                    <div id="countRowComponent" class="subComponent countComponent">
-                        <span class="countLabel">Количество записей:</span>
-                        <span class="countValue">5</span>
-                    </div>
-                    <div id="countColumnComponent" class="subComponent countComponent">
-                        <span class="countLabel">Количество полей:</span>
-                        <span class="countValue">8</span>
-                    </div>
-                    <div id="JSONComponent" class="subComponent">
-                        <h4>JSON</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовый сайт</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app"></div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="script.js"></script>        
-    </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
