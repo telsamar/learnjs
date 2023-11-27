@@ -7,18 +7,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return button;
     }
 
-    function elementsContainerComponent() {
+    function elementsContainerComponent(state) {
         let container = document.createElement('div');
         container.id = 'elementsContainerComponent';
         container.className = 'subComponent overflow-auto p-2';
         container.style.height = '200px';
+        container.innerHTML = '';
     
-        for (let i = 1; i <= 8; i++) {
+        state.urls.forEach((url, index) => {
             let element = document.createElement('div');
             element.className = 'elementComponent bg-light border p-2 mb-2 rounded';
-            element.textContent = `Источник ${i}`;
+            element.textContent = url.name;
             container.appendChild(element);
-        }
+        });
     
         container.addEventListener('click', function (e) {
             if (e.target && e.target.matches('.elementComponent')) {
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         return container;
     }
-
+    
     function buttonsContainerComponent() {
         let container = document.createElement('div');
         container.id = 'buttonsContainerComponent';
@@ -90,19 +91,89 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlComponent;
     }
 
-    function ButtonsComponent() {
+    function ButtonsComponent(state) {
         let buttonsComponent = document.createElement('div');
         buttonsComponent.id = 'buttonsComponent';
 
-        buttonsComponent.appendChild(createButton('Загрузить из файла', 'btn-primary mb-2'));
-        buttonsComponent.appendChild(createButton('Загрузить', 'btn-primary mb-2'));
-        buttonsComponent.appendChild(createButton('Сохранить', 'btn-primary mb-2'));
+        let fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', function(event) {
+            if (event.target.files.length > 0) {
+                loadURLsFromFile(event.target.files[0]);
+            }
+        });
+        buttonsComponent.appendChild(fileInput);
+        let loadFromFileButton = createButton('Загрузить из файла', 'btn-primary mb-2');
+        loadFromFileButton.addEventListener('click', function() {
+            fileInput.click();
+        });
+        buttonsComponent.appendChild(loadFromFileButton)
+        function loadURLsFromFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fileContent = event.target.result;
+                const lines = fileContent.split('\n').filter(line => line.trim());
+                state.urls = lines.map((url, index) => ({
+                    name: `url_${index + 1}`,
+                    url: url.trim()
+                }));
+                console.log('Updated URLs:', state);
+            };
+            reader.readAsText(file);
+        }
+        
+        // Функция для загрузки URL из Local Storage
+        function loadURLsFromLocalStorage() {
+            const storedURLs = localStorage.getItem('urls');
+            if (storedURLs) {
+                state.urls = JSON.parse(storedURLs);
+                console.log('URLs loaded from Local Storage:');
+                state.urls.forEach((url, index) => {
+                    console.log(`URL ${index + 1}: Name - ${url.name}, URL - ${url.url}`);
+                });
+
+                const elementsContainer = document.getElementById('elementsContainerComponent');
+                const updatedElementsContainer = elementsContainerComponent(state);
+                elementsContainer.replaceWith(updatedElementsContainer);
+            }
+        }
+        let loadButton = createButton('Загрузить', 'btn-primary mb-2');
+        loadButton.addEventListener('click', loadURLsFromLocalStorage);
+        buttonsComponent.appendChild(loadButton);
+
+        // Функция для сохранения URL в Local Storage
+        function saveURLsToLocalStorage() {
+            localStorage.setItem('urls', JSON.stringify(state.urls));
+            console.log('URLs saved to Local Storage:');
+            state.urls.forEach((url, index) => {
+                console.log(`URL ${index + 1}: Name - ${url.name}, URL - ${url.url}`);
+            });
+        }
+        let saveButton = createButton('Сохранить', 'btn-primary mb-2');
+        saveButton.addEventListener('click', saveURLsToLocalStorage);
+        buttonsComponent.appendChild(saveButton);
+
         buttonsComponent.appendChild(createButton('Рассчитать', 'btn-primary mb-2'));
+
+
 
         return buttonsComponent;
     }
 
     function MainComponent() {
+        let state = {
+            urls: [
+                { name: "url_1", url: "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json" },
+                { name: "url_2", url: "https://filesamples.com/samples/code/json/sample4.json" },
+            ],
+            loadedJSON: {},
+            countRows: 0,
+            countColumns: 0,
+            statusLoadedJSON: false,
+            currentURL_ID: -1
+        };
+
         let mainComponent = document.createElement('div');
         mainComponent.id = 'mainComponent';
         mainComponent.className = 'd-flex h-100';
@@ -116,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
         menuTitle.textContent = 'МЕНЮ';
         menuComponent.appendChild(menuTitle);
 
-        menuComponent.appendChild(ButtonsComponent());
+        menuComponent.appendChild(ButtonsComponent(state));
         menuComponent.appendChild(LoadedComponent());
 
         let bodyComponent = document.createElement('div');
@@ -128,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
         listComponent.className = 'd-flex flex-column flex-grow-1 mb-3 bg-white border p-3';
         listComponent.innerHTML = '<h4>Список источников данных</h4>';
         listComponent.appendChild(URLComponent());
-        listComponent.appendChild(elementsContainerComponent());
+        listComponent.appendChild(elementsContainerComponent(state));
         listComponent.appendChild(buttonsContainerComponent());
 
         bodyComponent.appendChild(listComponent);
