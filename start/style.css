@@ -48,10 +48,20 @@ html, body {
     gap: 10px;
 }
 
-/* Стили для элементов списка и информационного компонента */
-#listComponent, #infoComponent {
+/* Стиль для элементов списка */
+#listComponent{
     padding: 10px;
     margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стиль для информационного компонента */
+#infoComponent
+{
+    padding: 10px;
     background-color: #fff;
     border: 1px solid #ddd;
     display: flex;

@@ -5,3 +5,4 @@ https://github.com/JamesNK/Newtonsoft.Json/blob/master/Src/global.json
 https://github.com/benjamine/jsondiffpatch/blob/master/tsconfig.json
 https://github.com/benjamine/jsondiffpatch/blob/master/package.json
 https://github.com/konklone/json/blob/gh-pages/tests/json/basic.json
+https://github.com/mdn/learning-area/blob/51e664e3c8b6567f2c92d3b06615ece0949b5c0a/javascript/oojs/tasks/json/sample.json

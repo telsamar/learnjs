@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Создает кнопку с заданным текстом и классами
     function createButton(text, classes) {
         let button = document.createElement('button');
         button.type = 'button';
@@ -7,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return button;
     }
 
+    // Создает контейнер для элементов источника
     function elementsContainerComponent(state) {
         let container = document.createElement('div');
         container.id = 'elementsContainerComponent';
@@ -19,20 +21,42 @@ document.addEventListener('DOMContentLoaded', function () {
             element.className = 'elementComponent bg-light border p-2 mb-2 rounded';
             element.textContent = url.name;
             container.appendChild(element);
-        });
     
-        container.addEventListener('click', function (e) {
-            if (e.target && e.target.matches('.elementComponent')) {
+            element.addEventListener('click', function () {
                 let elements = container.getElementsByClassName('elementComponent');
                 Array.from(elements).forEach(el => el.classList.remove('selected'));
-    
-                e.target.classList.add('selected');
-            }
+                element.classList.add('selected');
+                loadAndDisplayJSON(url.url);
+            });
         });
     
         return container;
     }
-    
+
+    // Загружает и отображает JSON данные из заданного URL
+    function loadAndDisplayJSON(url) {
+        const loadedComponent = document.getElementById('loadedComponent');
+        loadedComponent.innerHTML = 'Загрузка данных...';
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const jsonComponent = document.getElementById('JSONComponent');
+                jsonComponent.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                loadedComponent.innerHTML = 'Данные загружены';
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке JSON данных:', error);
+                loadedComponent.innerHTML = 'Ошибка загрузки данных';
+            });
+    }
+
+    // Создает контейнер для кнопок
     function buttonsContainerComponent() {
         let container = document.createElement('div');
         container.id = 'buttonsContainerComponent';
@@ -45,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return container;
     }
 
+    // Создает компонент информации
     function InfoComponent() {
         let infoComponent = document.createElement('div');
         infoComponent.id = 'infoComponent';
@@ -72,16 +97,18 @@ document.addEventListener('DOMContentLoaded', function () {
     
         return infoComponent;
     }
-    
+
+    // Создает компонент "Данные загружены"
     function LoadedComponent() {
         let loadedComponent = document.createElement('div');
         loadedComponent.id = 'loadedComponent';
         loadedComponent.className = 'p-2';
-        loadedComponent.innerHTML = '<h3>Данные загружены</h3>';
+        loadedComponent.innerHTML = 'Выберите один из json файлов';
     
         return loadedComponent;
     }
     
+    // Создает компонент для пути к источнику
     function URLComponent() {
         let urlComponent = document.createElement('div');
         urlComponent.id = 'URLComponent';
@@ -91,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlComponent;
     }
 
+    // Создает компонент для пути к источнику
     function ButtonsComponent(state) {
         let buttonsComponent = document.createElement('div');
         buttonsComponent.id = 'buttonsComponent';
@@ -123,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.readAsText(file);
         }
         
-        // Функция для загрузки URL из Local Storage
         function loadURLsFromLocalStorage() {
             const storedURLs = localStorage.getItem('urls');
             if (storedURLs) {
@@ -142,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
         loadButton.addEventListener('click', loadURLsFromLocalStorage);
         buttonsComponent.appendChild(loadButton);
 
-        // Функция для сохранения URL в Local Storage
         function saveURLsToLocalStorage() {
             localStorage.setItem('urls', JSON.stringify(state.urls));
             console.log('URLs saved to Local Storage:');
@@ -156,11 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         buttonsComponent.appendChild(createButton('Рассчитать', 'btn-primary mb-2'));
 
-
-
         return buttonsComponent;
     }
 
+    // Главный компонент, объединяющий все другие компоненты
     function MainComponent() {
         let state = {
             urls: [
@@ -186,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let menuTitle = document.createElement('h3');
         menuTitle.textContent = 'МЕНЮ';
         menuComponent.appendChild(menuTitle);
-
         menuComponent.appendChild(ButtonsComponent(state));
         menuComponent.appendChild(LoadedComponent());
 
