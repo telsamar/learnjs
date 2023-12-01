@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         state.urls.forEach((url, index) => {
             let element = document.createElement('div');
             element.className = 'elementComponent bg-light border p-2 mb-2 rounded';
-            element.textContent = url.name;
+            element.textContent = url.name + ': ' + url.url;
             container.appendChild(element);
     
             element.addEventListener('click', function () {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadAndDisplayJSON(url) {
         const loadedComponent = document.getElementById('loadedComponent');
         loadedComponent.innerHTML = 'Загрузка данных...';
-
+    
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -53,9 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Ошибка при загрузке JSON данных:', error);
                 loadedComponent.innerHTML = 'Ошибка загрузки данных';
+                const jsonComponent = document.getElementById('JSONComponent');
+                jsonComponent.innerHTML = '';
             });
     }
-
+    
     // Создает контейнер для кнопок
     function buttonsContainerComponent() {
         let container = document.createElement('div');
@@ -79,12 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let countRowComponent = document.createElement('div');
         countRowComponent.id = 'countRowComponent';
         countRowComponent.className = 'subComponent d-flex justify-content-between align-items-center p-2';
-        countRowComponent.innerHTML = '<span class="countLabel">Количество записей:</span><span class="countValue">5</span>';
+        countRowComponent.innerHTML = '<span class="countLabel">Количество записей:</span><span class="countValue">0</span>';
     
         let countColumnComponent = document.createElement('div');
         countColumnComponent.id = 'countColumnComponent';
         countColumnComponent.className = 'subComponent d-flex justify-content-between align-items-center p-2';
-        countColumnComponent.innerHTML = '<span class="countLabel">Количество полей:</span><span class="countValue">8</span>';
+        countColumnComponent.innerHTML = '<span class="countLabel">Количество полей:</span><span class="countValue">0</span>';
     
         let jsonComponent = document.createElement('div');
         jsonComponent.id = 'JSONComponent';
@@ -165,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 elementsContainer.replaceWith(updatedElementsContainer);
             }
         }
+
         let loadButton = createButton('Загрузить', 'btn-primary mb-2');
         loadButton.addEventListener('click', loadURLsFromLocalStorage);
         buttonsComponent.appendChild(loadButton);
@@ -176,11 +179,63 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(`URL ${index + 1}: Name - ${url.name}, URL - ${url.url}`);
             });
         }
+        
         let saveButton = createButton('Сохранить', 'btn-primary mb-2');
         saveButton.addEventListener('click', saveURLsToLocalStorage);
         buttonsComponent.appendChild(saveButton);
 
-        buttonsComponent.appendChild(createButton('Рассчитать', 'btn-primary mb-2'));
+        const calculateButton = createButton('Рассчитать', 'btn-primary mb-2');
+        calculateButton.id = 'calculateButton';
+        calculateButton.addEventListener('click', function() {
+            const jsonComponent = document.getElementById('JSONComponent');
+            const jsonPre = jsonComponent.querySelector('pre');
+            try {
+                const jsonString = jsonPre.textContent;
+                // console.log('JSON строка:', jsonString);
+                const jsonData = JSON.parse(jsonString);
+
+                function calculateAndUpdateCounts(data) {
+                    let rowCount = 0;
+                    let columnCount = 0;
+                    if (Array.isArray(data)) {
+                        rowCount = data.length;
+                        if (rowCount > 0) {
+                            if (data[0]) {
+                                for (const key in data[0]) {
+                                    if (data[0].hasOwnProperty(key)) {
+                                        columnCount++;
+                                    }
+                                }
+                            }
+                        }
+                    } else if (typeof data === 'object') {
+                        rowCount = 1;
+                        for (const key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                columnCount++;
+                            }
+                        }
+                    }
+
+                    const countRowComponent = document.getElementById('countRowComponent');
+                    const countColumnComponent = document.getElementById('countColumnComponent');
+
+                    countRowComponent.querySelector('.countValue').textContent = rowCount;
+                    countColumnComponent.querySelector('.countValue').textContent = columnCount;
+
+                    state.countRows = rowCount;
+                    state.countColumns = columnCount;
+
+                    console.log('Количество записей:', rowCount);
+                    console.log('Количество полей:', columnCount);
+                }
+
+                calculateAndUpdateCounts(jsonData);
+            } catch (error) {
+                console.error('Ошибка при рассчете и обновлении значений:', error);
+            }
+        });
+        buttonsComponent.appendChild(calculateButton);
 
         return buttonsComponent;
     }
