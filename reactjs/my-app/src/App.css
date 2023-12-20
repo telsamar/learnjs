@@ -138,7 +138,7 @@ html, body {
 
 /* Стили для контейнера кнопок с флекс-распределением */
 .buttons-container {
-    display: flex;
+    display: flex; 
     justify-content: space-around;
     padding: 10px;
 }
