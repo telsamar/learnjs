@@ -1,6 +1,6 @@
 import React from 'react';
 
-function LoadedComponent() {
+function LoadedComponent(props) {
   return (
     <div>
       {/* Разметка и содержание LoadedComponent */}

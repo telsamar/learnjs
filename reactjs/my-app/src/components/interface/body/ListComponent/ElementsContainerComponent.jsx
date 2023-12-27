@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ElementsContainerComponent() {
+function ElementsContainerComponent(props) {
   return (
     <div>
       {/* Разметка и содержание ElementsContainerComponent */}

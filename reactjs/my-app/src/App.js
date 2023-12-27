@@ -14,7 +14,6 @@ function App() {
     currentURL_ID: -1
   });
 
-
   return (
     <div>
       <MainComponent state={state} setState={setState} />

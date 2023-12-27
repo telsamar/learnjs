@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ButtonsContainerComponent() {
+function ButtonsContainerComponent(props) {
   return (
     <div>
       {/* Разметка и содержание ButtonsContainerComponent */}

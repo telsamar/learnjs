@@ -1,6 +1,6 @@
 import React from 'react';
 
-function URLComponent() {
+function URLComponent(props) {
   return (
     <div>
       {/* Разметка и содержание URLComponent */}
