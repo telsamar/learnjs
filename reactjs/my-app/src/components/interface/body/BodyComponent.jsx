@@ -7,10 +7,9 @@ function BodyComponent(props) {
   return (
     <div id="bodyComponent" className="d-flex flex-column flex-grow-1 p-3">
       <div id="listComponent" className="mb-3 bg-white border p-3">
-        <h4>Список источников данных</h4>
-        <InfoComponent state={props.state} />
+        <ListComponent state={props.state} />
       </div>
-      <ListComponent state={props.state} />
+      <InfoComponent state={props.state} />
     </div>
   );
 }
