@@ -1,21 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
 function ElementsContainerComponent(props) {
   const { urls } = props.state;
-  // Создание локального состояния для отслеживания выбранной кнопки
+  
   const [selectedUrlIndex, setSelectedUrlIndex] = useState(-1);
 
-  // Функция для обработки нажатия на кнопку. Устанавливает индекс выбранной кнопки
-  const handleButtonClick = (index) => {
+  const handleButtonClick = async (index) => {
     setSelectedUrlIndex(index);
+
+    try {
+      const response = await fetch(urls[index].url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const json = await response.json();
+      props.setState(prevState => ({
+        ...prevState,
+        loadedJSON: json,
+        statusLoadedJSON: true,
+        currentURL_ID: index,
+        countRows: json.length || 0,
+        countColumns: json[0] ? Object.keys(json[0]).length : 0
+      }));
+    } catch (error) {
+      console.error("Could not load the URL:", error);
+      props.setState(prevState => ({
+        ...prevState,
+        loadedJSON: {},
+        statusLoadedJSON: false,
+        currentURL_ID: index,
+        countRows: 0,
+        countColumns: 0
+      }));
+    }
   };
 
+  // временно
+  useEffect(() => {
+    console.log('Текущее состояние:', props.state);
+  }, [props.state]); 
+
   return (
-    // Контейнер для кнопок с ограниченной высотой и возможностью прокрутки
     <div style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
       {urls.map((url, index) => (
-        // Кнопка для каждого URL-адреса
         <Button
           key={index}
           variant={selectedUrlIndex === index ? 'success' : 'outline-secondary'}
@@ -28,4 +54,5 @@ function ElementsContainerComponent(props) {
     </div>
   );
 }
+
 export default ElementsContainerComponent;

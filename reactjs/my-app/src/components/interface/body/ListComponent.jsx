@@ -8,7 +8,7 @@ function ListComponent(props) {
     <div>
         <h4 className='text-center'>Список источников данных </h4>
         <URLComponent state={props.state} />
-        <ElementsContainerComponent state={props.state} />
+        <ElementsContainerComponent state={props.state} setState={props.setState} />
         <ButtonsContainerComponent state={props.state} />
     </div>
   );
