@@ -6,35 +6,40 @@ function ElementsContainerComponent(props) {
   
   const [selectedUrlIndex, setSelectedUrlIndex] = useState(-1);
 
-  const handleButtonClick = async (index) => {
-    setSelectedUrlIndex(index);
+const handleButtonClick = async (index) => {
+  setSelectedUrlIndex(index);
+  try {
+    const response = await fetch(urls[index].url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const json = await response.json();
 
-    try {
-      const response = await fetch(urls[index].url);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const json = await response.json();
-      props.setState(prevState => ({
-        ...prevState,
-        loadedJSON: json,
-        statusLoadedJSON: true,
-        currentURL_ID: index,
-        countRows: json.length || 0,
-        countColumns: json[0] ? Object.keys(json[0]).length : 0
-      }));
-    } catch (error) {
-      console.error("Could not load the URL:", error);
-      props.setState(prevState => ({
-        ...prevState,
-        loadedJSON: {},
-        statusLoadedJSON: false,
-        currentURL_ID: index,
-        countRows: 0,
-        countColumns: 0
-      }));
-    }
-  };
+    const newRowcount = Array.isArray(json) ? json.length : 1;
 
-  // временно
+    const newColumncount = Array.isArray(json)
+      ? (json[0] ? Object.keys(json[0]).length : 0)
+      : Object.keys(json).length;
+
+    props.setState(prevState => ({
+      ...prevState,
+      loadedJSON: json,
+      statusLoadedJSON: true,
+      currentURL_ID: index,
+      countRows: newRowcount,
+      countColumns: newColumncount
+    }));
+  } catch (error) {
+    console.error("Could not load the URL:", error);
+    props.setState(prevState => ({
+      ...prevState,
+      loadedJSON: {},
+      statusLoadedJSON: false,
+      currentURL_ID: index,
+      countRows: 0,
+      countColumns: 0
+    }));
+  }
+};
+
   useEffect(() => {
     console.log('Текущее состояние:', props.state);
   }, [props.state]); 
