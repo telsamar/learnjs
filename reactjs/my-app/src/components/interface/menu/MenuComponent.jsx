@@ -7,7 +7,7 @@ function MenuComponent(props) {
     <div id="menuComponent" className="bg-light d-flex flex-column justify-content-between p-3" style={{ flex: '0 0 20%' }}>
       <div>
         <h3 className="mb-3 text-center">МЕНЮ</h3>
-        <ButtonsComponent state={props.state} />
+        <ButtonsComponent state={props.state} setState={props.setState} />
       </div>
       <div>
         <LoadedComponent state={props.state} />
