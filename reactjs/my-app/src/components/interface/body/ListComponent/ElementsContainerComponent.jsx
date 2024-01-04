@@ -13,19 +13,11 @@ const handleButtonClick = async (index) => {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const json = await response.json();
 
-    const newRowcount = Array.isArray(json) ? json.length : 1;
-
-    const newColumncount = Array.isArray(json)
-      ? (json[0] ? Object.keys(json[0]).length : 0)
-      : Object.keys(json).length;
-
     props.setState(prevState => ({
       ...prevState,
       loadedJSON: json,
       statusLoadedJSON: true,
       currentURL_ID: index,
-      countRows: newRowcount,
-      countColumns: newColumncount
     }));
   } catch (error) {
     console.error("Could not load the URL:", error);
