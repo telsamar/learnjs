@@ -1,14 +1,23 @@
 import React from 'react';
-import URLComponent from './ListComponent/URLComponent';
+// import URLComponent from './ListComponent/URLComponent';
 import ElementsContainerComponent from './ListComponent/ElementsContainerComponent';
 import ButtonsContainerComponent from './ListComponent/ButtonsContainerComponent';
 
 function ListComponent(props) {
+  const { currentURL_ID, urls } = props.state;
+
+  const currentUrlDisplay = currentURL_ID >= 0 && urls[currentURL_ID] ? urls[currentURL_ID].url : "Выберите элемент";
+
   return (
     <div>
         <h4 className='text-center'>Список источников данных</h4>
-        <URLComponent state={props.state} />
+        
+        <div style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc', borderRadius: '5px', textAlign: 'center' }}>
+          {currentUrlDisplay}
+        </div>
+
         <ElementsContainerComponent state={props.state} setState={props.setState} />
+
         <div style={{ marginTop: '20px' }}>
           <ButtonsContainerComponent state={props.state} />
         </div>

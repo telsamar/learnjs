@@ -45,7 +45,7 @@ const handleButtonClick = async (index) => {
           className="w-100 mb-2"
           onClick={() => handleButtonClick(index)}
         >
-          {url.name}: {url.url}
+          {url.name}
         </Button>
       ))}
     </div>
