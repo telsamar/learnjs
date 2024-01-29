@@ -6,9 +6,9 @@ function BodyComponent(props) {
   return (
     <div id="bodyComponent" className="d-flex flex-column flex-grow-1 p-3">
       <div id="listComponent" className="mb-3 bg-white border p-3">
-        <ListComponent state={props.state} setState={props.setState} />
+        <ListComponent state={props.state} handleButtonClick={props.handleButtonClick} handleAdd={props.handleAdd} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />
       </div>
-      <InfoComponent state={props.state} setState={props.setState} />
+      <InfoComponent state={props.state} />
     </div>
   );
 }

@@ -16,10 +16,10 @@ function ListComponent(props) {
           {currentUrlDisplay}
         </div>
 
-        <ElementsContainerComponent state={props.state} setState={props.setState} />
+        <ElementsContainerComponent state={props.state} handleButtonClick={props.handleButtonClick} />
 
         <div style={{ marginTop: '20px' }}>
-          <ButtonsContainerComponent state={props.state} />
+          <ButtonsContainerComponent state={props.state} handleAdd={props.handleAdd} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />
         </div>
     </div>
   );
