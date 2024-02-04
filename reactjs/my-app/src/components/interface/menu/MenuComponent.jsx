@@ -7,10 +7,16 @@ function MenuComponent(props) {
     <div id="menuComponent" className="bg-light d-flex flex-column justify-content-between p-3" style={{ flex: '0 0 20%' }}>
       <div>
         <h3 className="mb-3 text-center">МЕНЮ</h3>
-        <ButtonsComponent state={props.state} handleLoadFromFile={props.handleLoadFromFile} handleLoad={props.handleLoad} handleSave={props.handleSave} handleCalculate={props.handleCalculate}/>
+        <ButtonsComponent 
+          handleLoadFromFile={props.handleLoadFromFile} 
+          handleLoad={props.handleLoad} 
+          handleSave={props.handleSave} 
+          handleCalculate={props.handleCalculate}/>
       </div>
       <div>
-        <LoadedComponent state={props.state} />
+        <LoadedComponent 
+          statusLoadedJSON={props.statusLoadedJSON}
+          currentURL_ID={props.currentURL_ID} />
       </div>
     </div>
   );
