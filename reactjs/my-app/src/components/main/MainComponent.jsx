@@ -151,13 +151,20 @@ function MainComponent() {
         handleLoadFromFile={handleLoadFromFile} 
         handleLoad={handleLoad} 
         handleSave={handleSave} 
-        handleCalculate={handleCalculate} />
+        handleCalculate={handleCalculate} 
+      />
       <BodyComponent 
-        state={state} 
+        countRows={countRows}
+        countColumns={countColumns}
+        loadedJSON={loadedJSON}
+        currentURL_ID={currentURL_ID}
+        urls={urls}
+        statusLoadedJSON={statusLoadedJSON}
         handleButtonClick={handleButtonClick} 
         handleAdd={handleAdd} 
         handleDelete={handleDelete} 
-        handleEdit={handleEdit} />
+        handleEdit={handleEdit} 
+      />
     </div>
   );
 }

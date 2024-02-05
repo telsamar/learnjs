@@ -11,12 +11,14 @@ function MenuComponent(props) {
           handleLoadFromFile={props.handleLoadFromFile} 
           handleLoad={props.handleLoad} 
           handleSave={props.handleSave} 
-          handleCalculate={props.handleCalculate}/>
+          handleCalculate={props.handleCalculate}
+        />
       </div>
       <div>
         <LoadedComponent 
           statusLoadedJSON={props.statusLoadedJSON}
-          currentURL_ID={props.currentURL_ID} />
+          currentURL_ID={props.currentURL_ID} 
+        />
       </div>
     </div>
   );

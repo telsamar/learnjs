@@ -4,9 +4,7 @@ import ElementsContainerComponent from './ListComponent/ElementsContainerCompone
 import ButtonsContainerComponent from './ListComponent/ButtonsContainerComponent';
 
 function ListComponent(props) {
-  const { currentURL_ID, urls } = props.state;
-
-  const currentUrlDisplay = currentURL_ID >= 0 && urls[currentURL_ID] ? urls[currentURL_ID].url : "Выберите элемент";
+  const currentUrlDisplay = props.currentURL_ID >= 0 && props.urls[props.currentURL_ID] ? props.urls[props.currentURL_ID].url : "Выберите элемент";
 
   return (
     <div>
@@ -16,10 +14,18 @@ function ListComponent(props) {
           {currentUrlDisplay}
         </div>
 
-        <ElementsContainerComponent state={props.state} handleButtonClick={props.handleButtonClick} />
+        <ElementsContainerComponent 
+          currentURL_ID={props.currentURL_ID}
+          urls={props.urls}
+          handleButtonClick={props.handleButtonClick} 
+        />
 
         <div style={{ marginTop: '20px' }}>
-          <ButtonsContainerComponent state={props.state} handleAdd={props.handleAdd} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />
+          <ButtonsContainerComponent 
+            handleAdd={props.handleAdd} 
+            handleDelete={props.handleDelete} 
+            handleEdit={props.handleEdit} 
+          />
         </div>
     </div>
   );

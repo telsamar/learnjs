@@ -7,9 +7,16 @@ function InfoComponent(props) {
   return (
     <div className="border rounded p-3">
       <h4 className="text-center">Информация</h4>
-      <CountRowComponent state={props.state} />
-      <CountColumnComponent state={props.state} />
-      <JSONComponent state={props.state} />
+      <CountRowComponent 
+        countRows={props.countRows} 
+      />
+      <CountColumnComponent 
+        countColumns={props.countColumns} 
+      />
+      <JSONComponent 
+        loadedJSON={props.loadedJSON}
+        statusLoadedJSON={props.statusLoadedJSON}
+      />
     </div>
   );
 }

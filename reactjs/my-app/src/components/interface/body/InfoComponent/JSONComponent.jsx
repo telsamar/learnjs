@@ -2,13 +2,11 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 
 function JSONComponent(props) {
-  const { loadedJSON, statusLoadedJSON } = props.state;
-
   return (
     <div>
-      {statusLoadedJSON ? (
+      {props.statusLoadedJSON ? (
         <pre className="json-container border border-primary p-3 rounded">
-          {JSON.stringify(loadedJSON, null, 2)}
+          {JSON.stringify(props.loadedJSON, null, 2)}
         </pre>
       ) : (
         <Alert variant="info">
