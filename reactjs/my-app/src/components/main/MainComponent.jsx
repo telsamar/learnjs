@@ -3,20 +3,6 @@ import BodyComponent from '../interface/body/BodyComponent';
 import MenuComponent from '../interface/menu/MenuComponent';
 
 function MainComponent() {
-  // const [state, setState] = useState({
-  //   urls: [
-  //     { id: 1, name: "url_1", url: "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json" },
-  //     { id: 2, name: "url_2", url: "https://filesamples.com/samples/code/json/sample4.json" },
-  //     { id: 3, name: "url_3", url: "https://my-json-server.typicode.com/typicode/demo/db" },
-  //     { id: 4, name: "url_4", url: "https://my-json-server.typicode.com/typicode/demo/comments" },
-  //   ],
-  //   loadedJSON: {},
-  //   countRows: 0,
-  //   countColumns: 0,
-  //   statusLoadedJSON: false,
-  //   currentURL_ID: -1
-  // });
-  
   const [urls, setUrls] = useState([
     { id: 1, name: "url_1", url: "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json" },
     { id: 2, name: "url_2", url: "https://filesamples.com/samples/code/json/sample4.json" },
@@ -138,10 +124,39 @@ function MainComponent() {
       setCountColumns(0);
     }
   };
+
+  const addUrl = (newUrl) => {
+    setUrls(currentUrls => {
+      const maxId = currentUrls.reduce((max, item) => Math.max(max, item.id), 0);
+      return [...currentUrls, { ...newUrl, id: maxId + 1 }];
+    });
+  };
   
-  const handleAdd = () => {/* ... */};
-  const handleDelete = () => {/* ... */};
-  const handleEdit = () => {/* ... */};
+  const deleteUrl = () => {
+    if (currentURL_ID < 0) {
+      console.log("Нет выбранного URL для удаления.");
+      return;
+    }
+  
+    setUrls(prevUrls => prevUrls.filter(url => url.id !== currentURL_ID));
+    
+    setLoadedJSON({});
+    setStatusLoadedJSON(false);
+    setCurrentURL_ID(-1);
+    setCountRows(0);
+    setCountColumns(0);
+  };
+  
+  // const updateUrl = (updatedUrl) => {
+  //   setUrls(currentUrls => currentUrls.map(url => url.id === updatedUrl.id ? updatedUrl : url));
+  // };
+
+  const updateUrl = (updatedUrl) => {
+    setUrls(currentUrls => [
+        ...currentUrls.filter(url => url.id !== updatedUrl.id),
+        updatedUrl
+    ].sort((a, b) => a.id - b.id));
+  };
 
   return (
     <div id="mainComponent" className="d-flex h-100">
@@ -161,9 +176,10 @@ function MainComponent() {
         urls={urls}
         statusLoadedJSON={statusLoadedJSON}
         handleButtonClick={handleButtonClick} 
-        handleAdd={handleAdd} 
-        handleDelete={handleDelete} 
-        handleEdit={handleEdit} 
+        addUrl={addUrl} 
+        deleteUrl={deleteUrl} 
+        currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}
+        updateUrl={updateUrl} 
       />
     </div>
   );

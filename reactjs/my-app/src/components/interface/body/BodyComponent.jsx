@@ -10,9 +10,10 @@ function BodyComponent(props) {
           currentURL_ID={props.currentURL_ID}
           urls={props.urls}
           handleButtonClick={props.handleButtonClick} 
-          handleAdd={props.handleAdd} 
-          handleDelete={props.handleDelete} 
-          handleEdit={props.handleEdit} 
+          addUrl={props.addUrl} 
+          deleteUrl={props.deleteUrl} 
+          currentUrlName={props.currentUrlName}
+          updateUrl={props.updateUrl} 
         />
       </div>
       <InfoComponent 

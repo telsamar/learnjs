@@ -1,5 +1,4 @@
 import React from 'react';
-// import URLComponent from './ListComponent/URLComponent';
 import ElementsContainerComponent from './ListComponent/ElementsContainerComponent';
 import ButtonsContainerComponent from './ListComponent/ButtonsContainerComponent';
 
@@ -22,9 +21,12 @@ function ListComponent(props) {
 
         <div style={{ marginTop: '20px' }}>
           <ButtonsContainerComponent 
-            handleAdd={props.handleAdd} 
-            handleDelete={props.handleDelete} 
-            handleEdit={props.handleEdit} 
+            addUrl={props.addUrl} 
+            deleteUrl={props.deleteUrl} 
+            urls={props.urls}
+            currentURL_ID={props.currentURL_ID}
+            currentUrlName={props.currentUrlName}
+            updateUrl={props.updateUrl} 
           />
         </div>
     </div>
