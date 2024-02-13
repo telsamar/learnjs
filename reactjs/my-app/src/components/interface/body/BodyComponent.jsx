@@ -14,6 +14,26 @@ function BodyComponent(props) {
           deleteUrl={props.deleteUrl} 
           currentUrlName={props.currentUrlName}
           updateUrl={props.updateUrl} 
+
+          showDeleteModal={props.showDeleteModal}
+          setShowDeleteModal={props.setShowDeleteModal}
+          showAddModal={props.showAddModal}
+          setShowAddModal={props.setShowAddModal}
+          showEditModal={props.showEditModal}
+          newUrlName={props.newUrlName}
+          setNewUrlName={props.setNewUrlName}
+          newUrlPath={props.newUrlPath}
+          setNewUrlPath={props.setNewUrlPath}
+          editUrlName={props.editUrlName}
+          setEditUrlName={props.setEditUrlName}
+          editUrlPath={props.editUrlPath}
+          setEditUrlPath={props.setEditUrlPath}
+
+          handleClose={props.handleClose}
+          handleConfirmDelete={props.handleConfirmDelete}
+          handleSaveNewUrl={props.handleSaveNewUrl}
+          openEditModal={props.openEditModal}
+          handleSaveEdit={props.handleSaveEdit}
         />
       </div>
       <InfoComponent 

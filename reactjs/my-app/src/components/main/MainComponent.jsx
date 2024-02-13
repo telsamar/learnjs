@@ -99,6 +99,13 @@ function MainComponent() {
     }
   };
 
+  const clearState = () => {
+    setLoadedJSON({});
+    setStatusLoadedJSON(false);
+    setCountRows(0);
+    setCountColumns(0);
+  };
+  
   const handleButtonClick = async (id) => {
     const urlToLoad = urls.find(url => url.id === id);
   
@@ -117,11 +124,8 @@ function MainComponent() {
       setCurrentURL_ID(id);
     } catch (error) {
       console.error("Не удается загрузить URL:", error);
-      setLoadedJSON({});
-      setStatusLoadedJSON(false);
       setCurrentURL_ID(id);
-      setCountRows(0);
-      setCountColumns(0);
+      clearState();
     }
   };
 
@@ -140,22 +144,67 @@ function MainComponent() {
   
     setUrls(prevUrls => prevUrls.filter(url => url.id !== currentURL_ID));
     
-    setLoadedJSON({});
-    setStatusLoadedJSON(false);
     setCurrentURL_ID(-1);
-    setCountRows(0);
-    setCountColumns(0);
+    clearState();
   };
-  
-  // const updateUrl = (updatedUrl) => {
-  //   setUrls(currentUrls => currentUrls.map(url => url.id === updatedUrl.id ? updatedUrl : url));
-  // };
 
   const updateUrl = (updatedUrl) => {
-    setUrls(currentUrls => [
-        ...currentUrls.filter(url => url.id !== updatedUrl.id),
-        updatedUrl
-    ].sort((a, b) => a.id - b.id));
+    setUrls(currentUrls => currentUrls.map(url =>
+      url.id === updatedUrl.id
+        ? updatedUrl
+        : url
+    ));
+  };
+  
+  // по модальным окнам 
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [newUrlName, setNewUrlName] = useState('');
+  const [newUrlPath, setNewUrlPath] = useState('');
+  const [editUrlName, setEditUrlName] = useState('');
+  const [editUrlPath, setEditUrlPath] = useState('');
+
+  const handleClose = () => {
+    setShowDeleteModal(false);
+    setShowAddModal(false);
+    setShowEditModal(false);
+  };
+
+  const handleConfirmDelete = () => {
+    deleteUrl();
+    handleClose();
+  };
+
+  const handleSaveNewUrl = () => {
+    addUrl({
+      name: newUrlName,
+      url: newUrlPath
+    });
+    handleClose();
+    setNewUrlName('');
+    setNewUrlPath('');
+  };
+
+  const openEditModal = () => {
+    const urlToEdit = urls.find(url => url.id === currentURL_ID);
+    if (urlToEdit) {
+      setEditUrlName(urlToEdit.name);
+      setEditUrlPath(urlToEdit.url);
+      setShowEditModal(true);
+    } else {
+      alert('Выберите URL для редактирования.');
+    }
+  };
+
+  const handleSaveEdit = () => {
+    updateUrl({
+      id: currentURL_ID,
+      name: editUrlName,
+      url: editUrlPath
+    });
+    handleClose();
   };
 
   return (
@@ -180,6 +229,26 @@ function MainComponent() {
         deleteUrl={deleteUrl} 
         currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}
         updateUrl={updateUrl} 
+        
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        showAddModal={showAddModal}
+        setShowAddModal={setShowAddModal}
+        showEditModal={showEditModal}
+        newUrlName={newUrlName}
+        setNewUrlName={setNewUrlName}
+        newUrlPath={newUrlPath}
+        setNewUrlPath={setNewUrlPath}
+        editUrlName={editUrlName}
+        setEditUrlName={setEditUrlName}
+        editUrlPath={editUrlPath}
+        setEditUrlPath={setEditUrlPath}
+
+        handleClose={handleClose}
+        handleConfirmDelete={handleConfirmDelete}
+        handleSaveNewUrl={handleSaveNewUrl}
+        openEditModal={openEditModal}
+        handleSaveEdit={handleSaveEdit}
       />
     </div>
   );
