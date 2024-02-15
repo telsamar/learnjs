@@ -5,9 +5,16 @@ function ButtonsContainerComponent(props) {
   return (
     <>
       <ButtonGroup className="d-flex">
-        <Button onClick={() => props.setShowAddModal(true)} variant="success" className="w-100 me-2">Добавить источник</Button>
+        <Button onClick={() => props.handleOpenModal('add')} variant="success" className="w-100 me-2">Добавить источник</Button>
         <Button onClick={() => props.setShowDeleteModal(true)} variant="danger" className="w-100 me-2">Удалить источник</Button>
-        <Button onClick={() => props.openEditModal()} variant="warning" className="w-100">Изменить источник</Button>
+        <Button onClick={() => {
+          const selectedUrl = props.urls.find(url => url.id === props.currentURL_ID);
+          if (selectedUrl) {
+            props.handleOpenModal('edit', { name: selectedUrl.name, path: selectedUrl.url });
+          } else {
+            alert('Выберите URL для редактирования.');
+          }
+        }} variant="warning" className="w-100">Изменить источник</Button>
       </ButtonGroup>
 
       <Modal show={props.showDeleteModal} onHide={props.handleClose}>
@@ -21,9 +28,9 @@ function ButtonsContainerComponent(props) {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={props.showAddModal} onHide={props.handleClose}>
+      <Modal show={props.showModal} onHide={props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Добавить источник</Modal.Title>
+          <Modal.Title>{props.modalMode === 'add' ? 'Добавить источник' : 'Редактировать источник'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -32,8 +39,8 @@ function ButtonsContainerComponent(props) {
               <Form.Control
                 type="text"
                 placeholder="Введите имя источника"
-                value={props.newUrlName}
-                onChange={(e) => props.setNewUrlName(e.target.value)}
+                value={props.urlName}
+                onChange={(e) => props.setUrlName(e.target.value)}
               />
             </Form.Group>
             <Form.Group>
@@ -41,53 +48,20 @@ function ButtonsContainerComponent(props) {
               <Form.Control
                 type="text"
                 placeholder="Введите URL"
-                value={props.newUrlPath}
-                onChange={(e) => props.setNewUrlPath(e.target.value)}
+                value={props.urlPath}
+                onChange={(e) => props.setUrlPath(e.target.value)}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.handleClose}>Отменить</Button>
-          <Button variant="primary" onClick={props.handleSaveNewUrl}>Сохранить</Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={props.showEditModal} onHide={props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Редактировать источник</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>Имя источника</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Введите имя источника"
-                value={props.editUrlName}
-                onChange={(e) => props.setEditUrlName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Путь к источнику</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Введите URL"
-                value={props.editUrlPath}
-                onChange={(e) => props.setEditUrlPath(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={props.handleClose}>Отменить</Button>
-          <Button variant="primary" onClick={props.handleSaveEdit}>Сохранить</Button>
+          <Button variant="primary" onClick={props.handleSaveUrl}>{props.modalMode === 'add' ? 'Сохранить' : 'Обновить'}</Button>
         </Modal.Footer>
       </Modal>
 
     </>
   );
 }
-
 
 export default ButtonsContainerComponent;

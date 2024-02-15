@@ -160,55 +160,39 @@ function MainComponent() {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  
-  const [newUrlName, setNewUrlName] = useState('');
-  const [newUrlPath, setNewUrlPath] = useState('');
-  const [editUrlName, setEditUrlName] = useState('');
-  const [editUrlPath, setEditUrlPath] = useState('');
-
-  const handleClose = () => {
-    setShowDeleteModal(false);
-    setShowAddModal(false);
-    setShowEditModal(false);
-  };
-
   const handleConfirmDelete = () => {
     deleteUrl();
     handleClose();
   };
 
-  const handleSaveNewUrl = () => {
-    addUrl({
-      name: newUrlName,
-      url: newUrlPath
-    });
-    handleClose();
-    setNewUrlName('');
-    setNewUrlPath('');
-  };
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [urlName, setUrlName] = useState('');
+  const [urlPath, setUrlPath] = useState('');
 
-  const openEditModal = () => {
-    const urlToEdit = urls.find(url => url.id === currentURL_ID);
-    if (urlToEdit) {
-      setEditUrlName(urlToEdit.name);
-      setEditUrlPath(urlToEdit.url);
-      setShowEditModal(true);
-    } else {
-      alert('Выберите URL для редактирования.');
+  const handleOpenModal = (mode, url = { name: '', path: '' }) => {
+    setModalMode(mode);
+    setUrlName(url.name);
+    setUrlPath(url.path);
+    setShowModal(true);
+  };
+  
+  const handleSaveUrl = () => {
+    if (modalMode === 'add') {
+      addUrl({ name: urlName, url: urlPath });
+    } else if (modalMode === 'edit') {
+      updateUrl({ id: currentURL_ID, name: urlName, url: urlPath });
     }
-  };
-
-  const handleSaveEdit = () => {
-    updateUrl({
-      id: currentURL_ID,
-      name: editUrlName,
-      url: editUrlPath
-    });
     handleClose();
   };
 
+  const handleClose = () => {
+    setShowModal(false);
+    setShowDeleteModal(false);
+    setUrlName('');
+    setUrlPath('');
+  };
+  
   return (
     <div id="mainComponent" className="d-flex h-100">
       <MenuComponent 
@@ -234,23 +218,18 @@ function MainComponent() {
 
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
-        showAddModal={showAddModal}
-        setShowAddModal={setShowAddModal}
-        showEditModal={showEditModal}
-        newUrlName={newUrlName}
-        setNewUrlName={setNewUrlName}
-        newUrlPath={newUrlPath}
-        setNewUrlPath={setNewUrlPath}
-        editUrlName={editUrlName}
-        setEditUrlName={setEditUrlName}
-        editUrlPath={editUrlPath}
-        setEditUrlPath={setEditUrlPath}
 
         handleClose={handleClose}
         handleConfirmDelete={handleConfirmDelete}
-        handleSaveNewUrl={handleSaveNewUrl}
-        openEditModal={openEditModal}
-        handleSaveEdit={handleSaveEdit}
+
+        showModal={showModal}
+        modalMode={modalMode}
+        urlName={urlName}
+        setUrlName={setUrlName}
+        urlPath={urlPath}
+        setUrlPath={setUrlPath}
+        handleOpenModal={handleOpenModal}
+        handleSaveUrl={handleSaveUrl}
       />
     </div>
   );
