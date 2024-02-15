@@ -159,8 +159,10 @@ function MainComponent() {
   // по модальным окнам 
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  
   const [newUrlName, setNewUrlName] = useState('');
   const [newUrlPath, setNewUrlPath] = useState('');
   const [editUrlName, setEditUrlName] = useState('');
@@ -229,7 +231,7 @@ function MainComponent() {
         deleteUrl={deleteUrl} 
         currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}
         updateUrl={updateUrl} 
-        
+
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
         showAddModal={showAddModal}

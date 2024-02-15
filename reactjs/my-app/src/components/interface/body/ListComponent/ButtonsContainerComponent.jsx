@@ -10,6 +10,23 @@ function ButtonsContainerComponent(props) {
         <Button onClick={() => props.openEditModal()} variant="warning" className="w-100">Изменить источник</Button>
       </ButtonGroup>
 
+      <ButtonGroup className="d-flex">
+        <Button onClick={() => props.setShowAddEditModal(true, false)} variant="success" className="w-100 me-2">Добавить источник</Button>
+        <Button onClick={() => props.showDeleteModal(true)} variant="danger" className="w-100 me-2">Удалить источник</Button>
+        <Button onClick={() => props.setShowAddEditModal(true, true)} variant="warning" className="w-100">Изменить источник</Button>
+      </ButtonGroup>
+
+      <Modal show={props.showDeleteModal} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Удаление источника</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Точно удалить источник {props.currentUrlName}? </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={props.handleClose}>Отмена</Button>
+          <Button variant="danger" onClick={props.handleConfirmDelete}>Удалить</Button>
+        </Modal.Footer>
+      </Modal>
+
       <Modal show={props.showAddModal} onHide={props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Добавить источник</Modal.Title>
@@ -39,17 +56,6 @@ function ButtonsContainerComponent(props) {
         <Modal.Footer>
           <Button variant="secondary" onClick={props.handleClose}>Отменить</Button>
           <Button variant="primary" onClick={props.handleSaveNewUrl}>Сохранить</Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={props.showDeleteModal} onHide={props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Удаление источника</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Точно удалить источник {props.currentUrlName}? </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={props.handleClose}>Отмена</Button>
-          <Button variant="danger" onClick={props.handleConfirmDelete}>Удалить</Button>
         </Modal.Footer>
       </Modal>
 
@@ -84,6 +90,7 @@ function ButtonsContainerComponent(props) {
           <Button variant="primary" onClick={props.handleSaveEdit}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
+
     </>
   );
 }
