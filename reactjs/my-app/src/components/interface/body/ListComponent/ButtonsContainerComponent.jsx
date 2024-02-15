@@ -10,12 +10,6 @@ function ButtonsContainerComponent(props) {
         <Button onClick={() => props.openEditModal()} variant="warning" className="w-100">Изменить источник</Button>
       </ButtonGroup>
 
-      <ButtonGroup className="d-flex">
-        <Button onClick={() => props.setShowAddEditModal(true, false)} variant="success" className="w-100 me-2">Добавить источник</Button>
-        <Button onClick={() => props.showDeleteModal(true)} variant="danger" className="w-100 me-2">Удалить источник</Button>
-        <Button onClick={() => props.setShowAddEditModal(true, true)} variant="warning" className="w-100">Изменить источник</Button>
-      </ButtonGroup>
-
       <Modal show={props.showDeleteModal} onHide={props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Удаление источника</Modal.Title>
