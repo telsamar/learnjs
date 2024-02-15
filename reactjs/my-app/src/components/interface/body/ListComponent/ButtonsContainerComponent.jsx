@@ -9,11 +9,13 @@ function ButtonsContainerComponent(props) {
         <Button onClick={() => props.setShowDeleteModal(true)} variant="danger" className="w-100 me-2">Удалить источник</Button>
         <Button onClick={() => {
           const selectedUrl = props.urls.find(url => url.id === props.currentURL_ID);
+
           if (selectedUrl) {
             props.handleOpenModal('edit', { name: selectedUrl.name, path: selectedUrl.url });
           } else {
             alert('Выберите URL для редактирования.');
           }
+          
         }} variant="warning" className="w-100">Изменить источник</Button>
       </ButtonGroup>
 
