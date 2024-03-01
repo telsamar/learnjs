@@ -202,8 +202,6 @@ function MainComponent() {
         handleLoad={handleLoad} 
         handleSave={handleSave} 
         handleCalculate={handleCalculate}
-        urls={urls} 
-        handleButtonClick={handleButtonClick} 
       />
       <BodyComponent 
         countRows={countRows}

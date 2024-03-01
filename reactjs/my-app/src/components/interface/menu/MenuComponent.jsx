@@ -1,7 +1,6 @@
 import React from 'react';
 import ButtonsComponent from './ButtonsComponent';
 import LoadedComponent from './LoadedComponent';
-import ElementsContainerComponent from '../body/ListComponent/ElementsContainerComponent';
 
 function MenuComponent(props) {
   return (
@@ -14,13 +13,6 @@ function MenuComponent(props) {
           handleSave={props.handleSave} 
           handleCalculate={props.handleCalculate}
         />
-      </div>
-      <div>
-        <ElementsContainerComponent 
-            urls={props.urls} 
-            currentURL_ID={props.currentURL_ID} 
-            handleButtonClick={props.handleButtonClick}
-          />
       </div>
       <div>
         <LoadedComponent 
