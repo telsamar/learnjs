@@ -1,0 +1,34 @@
+// import { useState } from 'react'
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
+//components
+import BodyContainer from '@path_components/main/BodyContainer';
+
+
+//---------------------/scripts-------------------------
+function ProvApp() {
+    const { enqueueSnackbar } = useSnackbar();
+
+    const addSnackbar = (text, variant) => () => {
+        enqueueSnackbar(text, { variant });
+    };
+
+    return (
+        <div className='d-flex flex-column  vh-100 header-main wrapper-window' >
+            <BodyContainer
+                addSnackbar={addSnackbar}
+            />
+        </div>
+    );
+}
+
+
+function App() {
+    return (
+        <SnackbarProvider maxSnack={3}>
+            <ProvApp />
+        </SnackbarProvider>
+    );
+}
+
+export default App;

@@ -1,0 +1,116 @@
+//*********************variables************************
+//-------------brand color------------
+$main-brand: #283593
+$second-brand: #001064
+$third-brand: #5f5fc4
+$success-brand: #0acd55
+$danger-brand: #e86d78
+$warning-brand: #e8e06d
+$choose-brand: #9393c2
+$select-brand: #a8f2a0
+$grey-brand: #9b9b9b
+
+
+//------------/brand color------------
+
+//********************/variables************************
+
+
+//*********************functions************************
+@function darker($color, $tone)
+  $adjust: -16*$tone
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust)
+
+
+@function lighter($color, $tone) 
+  $adjust: 16*$tone
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust)
+
+
+//********************/functions************************
+
+//**********************extends*************************
+%window-style
+    background: #000000
+    border-radius: 10px
+
+%opacity-card
+    opacity: 0.7
+
+%opacity-window
+    opacity: 0.9
+
+%top-z-index
+    z-index: 5000
+
+//*********************/extends*************************
+
+
+
+//**********************styles**************************
+
+
+
+//---------------main-----------------
+body 
+    min-height: 100vh
+    overflow: hidden
+   
+//--------------/main-----------------
+
+    
+//------------interface---------------
+
+//-----------/interface---------------
+
+
+//------------background--------------
+.main-brand 
+    background: $main-brand
+
+.second-brand 
+    background: $second-brand
+    color: #fff
+
+.third-brand
+    background: $third-brand 
+
+.success-brand
+    background: $success-brand 
+    color: #fff
+
+.select-brand
+    background: $select-brand 
+    
+.grey-brand
+    background: $grey-brand 
+//-----------/background--------------
+
+
+//---------------text-----------------
+.text-third-brand
+    color: $third-brand !important
+
+.text-second-brand
+    color: $second-brand !important
+
+.text-tab-choosen
+    font-size: 1.2rem !important
+
+.text-rotate
+    writing-mode: vertical-rl
+//--------------/text-----------------
+
+
+
+
+//-------------rewrite----------------
+.leaflet-container 
+    min-height: 100%
+    width: 100%
+
+
+//------------/rewrite----------------
+//*********************/styles**************************
+
+
