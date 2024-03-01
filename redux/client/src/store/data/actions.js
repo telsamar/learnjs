@@ -1,93 +1,41 @@
-export const SET_OBJECT = 'SET_OBJECT';
-export const DELETE_OBJECT = 'DELETE_OBJECT';
-export const DELETE_OBJECT_ARR = 'DELETE_OBJECT_ARR';
-export const ADD_OBJECT = 'ADD_OBJECT';
-export const ADD_OBJECT_ARR = 'ADD_OBJECT_ARR';
-export const UPDATE_OBJECT = 'UPDATE_OBJECT';
-export const UPDATE_TEMP_ELEMENT = 'UPDATE_TEMP_ELEMENT';
-export const UPDATE_TEMP_ELEMENT_ARR = 'UPDATE_TEMP_ELEMENT_ARR';
-export const CLEAR_OBJECT = 'CLEAR_OBJECT';
+export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
 
+export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
+  const reader = new FileReader();
 
-
-export const SET_TEXT = 'SET_TEXT';
-
-
-export const act_setText = (result) => (
-    {
-        type: SET_TEXT,
-        payload: result
+  reader.onload = async (e) => {
+    const text = e.target.result;
+    
+    const state = getState();
+    if (!state.allData || !state.allData.urls) {
+      console.error('ошибка', state);
+      return;
     }
-)
+    const existingUrls = state.allData.urls;
 
+    let newId = existingUrls.reduce((max, url) => Math.max(url.id, max), 0);
 
+    const newUrls = text.split('\n')
+      .map(url => url.trim())
+      .filter(url => url && !existingUrls.some(existingUrl => existingUrl.url.trim() === url))
+      .map(url => ({
+        id: ++newId,
+        name: `url_${newId}`,
+        url: url
+      }));
 
-
-
-
-
-
-
-export const act_setObject = (result) => (
-    {
-        type: SET_OBJECT,
-        payload: result
+    if (newUrls.length > 0) {
+      // console.log("Новые URL-адреса для добавления:", newUrls);
+      dispatch({
+        type: LOAD_URLS_FROM_FILE,
+        payload: newUrls,
+      });
+    } else {
+      // console.log("Новые URL-адреса не найдены или уже существуют в списке");
     }
-)
+  };
 
-export const act_deleteObject = (result) => (
-    {
-        type: DELETE_OBJECT,
-        payload: result
-    }
-)
+  reader.readAsText(file);
+};
 
-export const act_deleteObjectArr = (result) => (
-    {
-        type: DELETE_OBJECT_ARR,
-        payload: result
-    }
-)
-
-export const act_addObject= (result) => (
-    {
-        type: ADD_OBJECT,
-        payload: result
-    }
-)
-
-export const act_addObjectArr = (result) => (
-    {
-        type: ADD_OBJECT_ARR,
-        payload: result
-    }
-)
-
-export const act_updateObject = (result) => (
-    {
-        type: UPDATE_OBJECT,
-        payload: result
-    }
-)
-
-export const act_updateTempElement = (result) => (
-    {
-        type: UPDATE_TEMP_ELEMENT,
-        payload: result
-    }
-)
-
-export const act_updateTempElementArr = (result) => (
-    {
-        type: UPDATE_TEMP_ELEMENT_ARR,
-        payload: result
-    }
-)
-
-export const act_clearObject = (result) => (
-    {
-        type: CLEAR_OBJECT,
-        payload: result
-    }
-)
 

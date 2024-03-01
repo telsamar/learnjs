@@ -1,15 +1,17 @@
 import ReactDOM from 'react-dom/client';
-import {io} from 'socket.io-client'
+// import {io} from 'socket.io-client'
 import App from './App';
 
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
-import rootReduce from './store/reducers';
+import rootReduce from './store/reducers'
+import { thunk } from 'redux-thunk';
+
 
 //-----------------------CSS----------------------------
 import 'antd/dist/reset.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'leaflet/dist/leaflet.css';
+// import 'leaflet/dist/leaflet.css';
 import "allotment/dist/style.css";
 import './index.sass';
 //-----------------------/CSS---------------------------
@@ -37,7 +39,8 @@ console.log('run from IP: ' + listenerName)
 
 //Redux store init
 let initialStore = {};
-export const store = createStore(rootReduce, initialStore);
+export const store = createStore(rootReduce, initialStore, applyMiddleware(thunk));
+
 //-----------------/configurations----------------------
 
 
@@ -87,8 +90,9 @@ export const store = createStore(rootReduce, initialStore);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
-        <App store={store}/>
+        <App />
     </Provider>,
 );
+
 
 
