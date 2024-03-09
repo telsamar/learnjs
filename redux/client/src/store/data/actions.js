@@ -1,4 +1,6 @@
 export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
+export const LOAD_URLS_FROM_LOCAL_STORAGE = 'LOAD_URLS_FROM_LOCAL_STORAGE';
+export const CALCULATE_DATA_FROM_URL = 'CALCULATE_DATA_FROM_URL';
 
 export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
   const reader = new FileReader();
@@ -38,4 +40,55 @@ export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
   reader.readAsText(file);
 };
 
+export const act_loadUrlsFromLocalStorage = () => {
+  const serializedUrls = localStorage.getItem('urls');
+  let urls = [];
 
+  if (serializedUrls) {
+    try {
+      urls = JSON.parse(serializedUrls);
+      console.log('Список URL успешно загружен из Local Storage: ', urls);
+    } catch (error) {
+      console.error('Ошибка при загрузке URL из Local Storage:', error);
+    }
+  } else {
+    console.log('Список URL не найден в Local Storage');
+  }
+
+  return {
+    type: LOAD_URLS_FROM_LOCAL_STORAGE,
+    payload: urls,
+  };
+};
+
+export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) => {
+  const { urls } = getState().allData;
+  const selectedUrl = urls.find(url => url.id === urlId);
+
+  if (!selectedUrl) {
+    console.log('Пожалуйста, выберите URL из списка.');
+    return;
+  }
+
+  try {
+    const response = await fetch(selectedUrl.url);
+    if (!response.ok) throw new Error(`HTTP error! статус: ${response.status}`);
+    const data = await response.json();
+
+    const countRows = Array.isArray(data) ? data.length : 1;
+    const countColumns = Array.isArray(data) && data[0] ? Object.keys(data[0]).length : Object.keys(data).length;
+
+    dispatch({
+      type: CALCULATE_DATA_FROM_URL,
+      payload: { countRows, countColumns }
+    });
+
+    console.log(`Расчет завершен. Строк: ${countRows}, Полей: ${countColumns}`);
+  } catch (error) {
+    console.error("Ошибка при попытке загрузить данные:", error);
+    dispatch({
+      type: CALCULATE_DATA_FROM_URL,
+      payload: { countRows: 0, countColumns: 0 }
+    });
+  }
+};

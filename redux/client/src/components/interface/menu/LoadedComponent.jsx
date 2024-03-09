@@ -1,12 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-function LoadedComponent(props) {
+function LoadedComponent({ currentURL_ID, statusLoadedJSON }) {
   return (
     <div>
       <p>
-        {props.currentURL_ID === -1
+        {currentURL_ID === -1
           ? 'Ожидание выбора данных'
-          : props.statusLoadedJSON
+          : statusLoadedJSON
           ? 'Данные загружены'
           : 'Данные не удалось загрузить'}
       </p>
@@ -14,4 +15,9 @@ function LoadedComponent(props) {
   );
 }
 
-export default LoadedComponent;
+const mapStateToProps = (state) => ({
+  currentURL_ID: state.allData.currentURL_ID,
+  statusLoadedJSON: state.allData.statusLoadedJSON,
+});
+
+export default connect(mapStateToProps)(LoadedComponent);

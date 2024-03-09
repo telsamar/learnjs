@@ -50,21 +50,21 @@ function MainComponent() {
 //     fileInput.click();
 //   };
   
-  const handleLoad = () => {
-    const serializedUrls = localStorage.getItem('urls');
+  // const handleLoad = () => {
+  //   const serializedUrls = localStorage.getItem('urls');
   
-    if (serializedUrls) {
-      try {
-        const urls = JSON.parse(serializedUrls);
-        setUrls(urls);
-        console.log('Список URL успешно загружен из Local Storage');
-      } catch (error) {
-        console.error('Ошибка при загрузке URL из Local Storage:', error);
-      }
-    } else {
-      console.log('Список URL не найден в Local Storage');
-    }
-  };
+  //   if (serializedUrls) {
+  //     try {
+  //       const urls = JSON.parse(serializedUrls);
+  //       setUrls(urls);
+  //       console.log('Список URL успешно загружен из Local Storage');
+  //     } catch (error) {
+  //       console.error('Ошибка при загрузке URL из Local Storage:', error);
+  //     }
+  //   } else {
+  //     console.log('Список URL не найден в Local Storage');
+  //   }
+  // };
 
 //   const handleSave = () => {
 //     const serializedUrls = JSON.stringify(urls);
@@ -72,32 +72,32 @@ function MainComponent() {
 //     console.log('Список URL успешно сохранен в Local Storage');
 //   };
 
-  const handleCalculate = async () => {
-    const selectedUrl = urls.find(url => url.id === currentURL_ID);
+  // const handleCalculate = async () => {
+  //   const selectedUrl = urls.find(url => url.id === currentURL_ID);
 
-    if (!selectedUrl) {
-      console.log('Пожалуйста, выберите URL из списка.');
-      return;
-    }
+  //   if (!selectedUrl) {
+  //     console.log('Пожалуйста, выберите URL из списка.');
+  //     return;
+  //   }
   
-    try {
-      const response = await fetch(selectedUrl.url);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const data = await response.json();
+  //   try {
+  //     const response = await fetch(selectedUrl.url);
+  //     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  //     const data = await response.json();
   
-      const countRows = Array.isArray(data) ? data.length : 1;
-      const countColumns = Array.isArray(data) && data[0] ? Object.keys(data[0]).length : Object.keys(data).length;
+  //     const countRows = Array.isArray(data) ? data.length : 1;
+  //     const countColumns = Array.isArray(data) && data[0] ? Object.keys(data[0]).length : Object.keys(data).length;
   
-      setCountRows(countRows);
-      setCountColumns(countColumns);
+  //     setCountRows(countRows);
+  //     setCountColumns(countColumns);
   
-      console.log(`Расчет завершен. Строк: ${countRows}, Полей: ${countColumns}`);
-    } catch (error) {
-      console.error("Ошибка при попытке загрузить данные:", error);
-      setCountRows(0);
-      setCountColumns(0);
-    }
-  };
+  //     console.log(`Расчет завершен. Строк: ${countRows}, Полей: ${countColumns}`);
+  //   } catch (error) {
+  //     console.error("Ошибка при попытке загрузить данные:", error);
+  //     setCountRows(0);
+  //     setCountColumns(0);
+  //   }
+  // };
 
   const clearState = () => {
     setLoadedJSON({});
@@ -196,12 +196,12 @@ function MainComponent() {
   return (
     <div id="mainComponent" className="d-flex h-100">
       <MenuComponent 
-        statusLoadedJSON={statusLoadedJSON}
-        currentURL_ID={currentURL_ID}
+        // statusLoadedJSON={statusLoadedJSON}
+        // currentURL_ID={currentURL_ID}
         // handleLoadFromFile={handleLoadFromFile} 
-        handleLoad={handleLoad} 
+        // handleLoad={handleLoad} 
         // handleSave={handleSave} 
-        handleCalculate={handleCalculate}
+        // handleCalculate={handleCalculate}
       />
 
       <BodyComponent

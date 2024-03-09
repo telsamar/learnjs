@@ -1,5 +1,7 @@
 import { 
     LOAD_URLS_FROM_FILE,
+    LOAD_URLS_FROM_LOCAL_STORAGE,
+    CALCULATE_DATA_FROM_URL,
 } from './actions'
 
 const defaultState = {
@@ -20,7 +22,19 @@ export const dataReducer = (state = defaultState, action) => {
                 ...state,
                 urls: [...state.urls, ...action.payload],
             };
-            
+
+        case LOAD_URLS_FROM_LOCAL_STORAGE:
+            return {
+                ...state,
+                urls: action.payload,
+            };
+
+        case CALCULATE_DATA_FROM_URL:
+            return {
+                ...state,
+                ...action.payload,
+            };
+
         default: 
             return state
     }

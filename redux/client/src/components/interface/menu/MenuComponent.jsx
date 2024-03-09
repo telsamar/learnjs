@@ -8,14 +8,14 @@ function MenuComponent(props) {
       <div>
         <h3 className="mb-3 text-center">МЕНЮ</h3>
         <ButtonsComponent 
-          handleLoad={props.handleLoad} 
-          handleCalculate={props.handleCalculate}
+          // handleLoad={props.handleLoad} 
+          // handleCalculate={props.handleCalculate}
         />
       </div>
       <div>
         <LoadedComponent 
-          statusLoadedJSON={props.statusLoadedJSON}
-          currentURL_ID={props.currentURL_ID} 
+          // statusLoadedJSON={props.statusLoadedJSON}
+          // currentURL_ID={props.currentURL_ID} 
         />
       </div>
     </div>
