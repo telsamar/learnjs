@@ -106,28 +106,28 @@ function MainComponent() {
     setCountColumns(0);
   };
   
-  const handleButtonClick = async (id) => {
-    const urlToLoad = urls.find(url => url.id === id);
+  // const handleButtonClick = async (id) => {
+  //   const urlToLoad = urls.find(url => url.id === id);
   
-    if (!urlToLoad) {
-      console.error("Ссылка не найдена:", id);
-      return;
-    }
+  //   if (!urlToLoad) {
+  //     console.error("Ссылка не найдена:", id);
+  //     return;
+  //   }
   
-    try {
-      const response = await fetch(urlToLoad.url);
-      if (!response.ok) throw new Error(`HTTP ошибка! статус: ${response.status}`);
-      const json = await response.json();
+  //   try {
+  //     const response = await fetch(urlToLoad.url);
+  //     if (!response.ok) throw new Error(`HTTP ошибка! статус: ${response.status}`);
+  //     const json = await response.json();
   
-      setLoadedJSON(json);
-      setStatusLoadedJSON(true);
-      setCurrentURL_ID(id);
-    } catch (error) {
-      console.error("Не удается загрузить URL:", error);
-      setCurrentURL_ID(id);
-      clearState();
-    }
-  };
+  //     setLoadedJSON(json);
+  //     setStatusLoadedJSON(true);
+  //     setCurrentURL_ID(id);
+  //   } catch (error) {
+  //     console.error("Не удается загрузить URL:", error);
+  //     setCurrentURL_ID(id);
+  //     clearState();
+  //   }
+  // };
 
   // по модальным окнам 
 
@@ -210,7 +210,7 @@ function MainComponent() {
         currentURL_ID={currentURL_ID}
         urls={urls}
         // statusLoadedJSON={statusLoadedJSON}
-        handleButtonClick={handleButtonClick} 
+        // handleButtonClick={handleButtonClick} 
         addUrl={addUrl} 
         deleteUrl={deleteUrl} 
         currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}

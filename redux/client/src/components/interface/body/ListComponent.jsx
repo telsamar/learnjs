@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ElementsContainerComponent from './ListComponent/ElementsContainerComponent';
 import ButtonsContainerComponent from './ListComponent/ButtonsContainerComponent';
 
@@ -48,4 +49,9 @@ function ListComponent(props) {
   );
 }
 
-export default ListComponent;
+const mapStateToProps = (state) => ({
+  currentURL_ID: state.allData.currentURL_ID,
+  urls: state.allData.urls,
+});
+
+export default connect(mapStateToProps)(ListComponent);

@@ -9,7 +9,7 @@ function BodyComponent(props) {
         <ListComponent 
           currentURL_ID={props.currentURL_ID}
           urls={props.urls}
-          handleButtonClick={props.handleButtonClick} 
+          // handleButtonClick={props.handleButtonClick} 
           addUrl={props.addUrl} 
           deleteUrl={props.deleteUrl} 
           currentUrlName={props.currentUrlName}
