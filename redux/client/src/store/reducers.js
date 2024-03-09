@@ -6,5 +6,5 @@ import { interfaceReducer } from './interface/reducers' // все про мод�
 
 export default combineReducers({
     allData: dataReducer,
-    // allInterface: interfaceReducer,
+    allInterface: interfaceReducer,
 })

@@ -131,6 +131,12 @@ function MainComponent() {
 
   // по модальным окнам 
 
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [urlName, setUrlName] = useState('');
+  const [urlPath, setUrlPath] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const addUrl = (newUrl) => {
     setUrls(currentUrls => {
       const maxId = currentUrls.reduce((max, item) => Math.max(max, item.id), 0);
@@ -158,17 +164,10 @@ function MainComponent() {
     ));
   };
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const handleConfirmDelete = () => {
     deleteUrl();
     handleClose();
   };
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState('add');
-  const [urlName, setUrlName] = useState('');
-  const [urlPath, setUrlPath] = useState('');
 
   const handleOpenModal = (mode, url = { name: '', path: '' }) => {
     setModalMode(mode);
