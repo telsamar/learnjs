@@ -8,14 +8,14 @@ function InfoComponent(props) {
     <div className="border rounded p-3">
       <h4 className="text-center">Информация</h4>
       <CountRowComponent 
-        countRows={props.countRows} 
+        // countRows={props.countRows} 
       />
       <CountColumnComponent 
-        countColumns={props.countColumns} 
+        // countColumns={props.countColumns} 
       />
       <JSONComponent 
-        loadedJSON={props.loadedJSON}
-        statusLoadedJSON={props.statusLoadedJSON}
+        // loadedJSON={props.loadedJSON}
+        // statusLoadedJSON={props.statusLoadedJSON}
       />
     </div>
   );

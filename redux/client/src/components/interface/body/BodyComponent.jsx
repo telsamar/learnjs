@@ -32,10 +32,10 @@ function BodyComponent(props) {
         />
       </div>
       <InfoComponent 
-        statusLoadedJSON={props.statusLoadedJSON}
-        countRows={props.countRows}
-        countColumns={props.countColumns}
-        loadedJSON={props.loadedJSON}
+        // statusLoadedJSON={props.statusLoadedJSON}
+        // countRows={props.countRows}
+        // countColumns={props.countColumns}
+        // loadedJSON={props.loadedJSON}
       />
     </div>
   );

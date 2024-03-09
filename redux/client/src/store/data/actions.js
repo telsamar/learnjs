@@ -2,6 +2,10 @@ export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
 export const LOAD_URLS_FROM_LOCAL_STORAGE = 'LOAD_URLS_FROM_LOCAL_STORAGE';
 export const CALCULATE_DATA_FROM_URL = 'CALCULATE_DATA_FROM_URL';
 
+export const LOAD_DATA_FOR_URL = 'LOAD_DATA_FOR_URL';
+export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS';
+export const LOAD_DATA_ERROR = 'LOAD_DATA_ERROR';
+
 export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
   const reader = new FileReader();
 
@@ -90,5 +94,28 @@ export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) =>
       type: CALCULATE_DATA_FROM_URL,
       payload: { countRows: 0, countColumns: 0 }
     });
+  }
+};
+
+export const act_loadDataForUrl = (id) => async (dispatch, getState) => {
+  const { urls } = getState().allData;
+  const urlToLoad = urls.find(url => url.id === id);
+
+  if (!urlToLoad) {
+    console.error("Ссылка не найдена:", id);
+    return;
+  }
+
+  dispatch({ type: LOAD_DATA_FOR_URL, currentURL_ID: id });
+
+  try {
+    const response = await fetch(urlToLoad.url);
+    if (!response.ok) throw new Error(`HTTP ошибка! статус: ${response.status}`);
+    const json = await response.json();
+
+    dispatch({ type: LOAD_DATA_SUCCESS, payload: json, currentURL_ID: id });
+  } catch (error) {
+    console.error("Не удается загрузить URL:", error);
+    dispatch({ type: LOAD_DATA_ERROR, currentURL_ID: id });
   }
 };

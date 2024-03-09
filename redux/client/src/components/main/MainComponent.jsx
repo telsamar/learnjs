@@ -129,6 +129,8 @@ function MainComponent() {
     }
   };
 
+  // по модальным окнам 
+
   const addUrl = (newUrl) => {
     setUrls(currentUrls => {
       const maxId = currentUrls.reduce((max, item) => Math.max(max, item.id), 0);
@@ -155,8 +157,6 @@ function MainComponent() {
         : url
     ));
   };
-  
-  // по модальным окнам 
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -205,12 +205,12 @@ function MainComponent() {
       />
 
       <BodyComponent
-        countRows={countRows}
-        countColumns={countColumns}
-        loadedJSON={loadedJSON}
+        // countRows={countRows}
+        // countColumns={countColumns}
+        // loadedJSON={loadedJSON}
         currentURL_ID={currentURL_ID}
         urls={urls}
-        statusLoadedJSON={statusLoadedJSON}
+        // statusLoadedJSON={statusLoadedJSON}
         handleButtonClick={handleButtonClick} 
         addUrl={addUrl} 
         deleteUrl={deleteUrl} 
