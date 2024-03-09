@@ -119,3 +119,16 @@ export const act_loadDataForUrl = (id) => async (dispatch, getState) => {
     dispatch({ type: LOAD_DATA_ERROR, currentURL_ID: id });
   }
 };
+
+export const ADD_URL = 'ADD_URL';
+export const UPDATE_URL = 'UPDATE_URL';
+
+export const act_addUrl = (newUrl) => ({
+  type: ADD_URL,
+  payload: newUrl,
+});
+
+export const act_updateUrl = (updatedUrl) => ({
+  type: UPDATE_URL,
+  payload: updatedUrl,
+});

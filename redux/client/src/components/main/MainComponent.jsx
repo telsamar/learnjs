@@ -98,13 +98,6 @@ function MainComponent() {
   //     setCountColumns(0);
   //   }
   // };
-
-  const clearState = () => {
-    setLoadedJSON({});
-    setStatusLoadedJSON(false);
-    setCountRows(0);
-    setCountColumns(0);
-  };
   
   // const handleButtonClick = async (id) => {
   //   const urlToLoad = urls.find(url => url.id === id);
@@ -137,6 +130,20 @@ function MainComponent() {
   const [urlPath, setUrlPath] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // const handleOpenModal = (mode, url = { name: '', path: '' }) => {
+  //   setModalMode(mode);
+  //   setUrlName(url.name);
+  //   setUrlPath(url.path);
+  //   setShowModal(true);
+  // };
+
+  const clearState = () => {
+    setLoadedJSON({});
+    setStatusLoadedJSON(false);
+    setCountRows(0);
+    setCountColumns(0);
+  };
+
   const addUrl = (newUrl) => {
     setUrls(currentUrls => {
       const maxId = currentUrls.reduce((max, item) => Math.max(max, item.id), 0);
@@ -167,13 +174,6 @@ function MainComponent() {
   const handleConfirmDelete = () => {
     deleteUrl();
     handleClose();
-  };
-
-  const handleOpenModal = (mode, url = { name: '', path: '' }) => {
-    setModalMode(mode);
-    setUrlName(url.name);
-    setUrlPath(url.path);
-    setShowModal(true);
   };
   
   const handleSaveUrl = () => {
@@ -213,11 +213,11 @@ function MainComponent() {
         // handleButtonClick={handleButtonClick} 
         addUrl={addUrl} 
         deleteUrl={deleteUrl} 
-        currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}
+        // currentUrlName={urls.find(url => url.id === currentURL_ID)?.name || ''}
         updateUrl={updateUrl} 
 
         showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
+        // setShowDeleteModal={setShowDeleteModal}
 
         handleClose={handleClose}
         handleConfirmDelete={handleConfirmDelete}
@@ -228,7 +228,7 @@ function MainComponent() {
         setUrlName={setUrlName}
         urlPath={urlPath}
         setUrlPath={setUrlPath}
-        handleOpenModal={handleOpenModal}
+        // handleOpenModal={handleOpenModal}
         handleSaveUrl={handleSaveUrl}
       />
     </div>

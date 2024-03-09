@@ -1,22 +1,73 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, ButtonGroup, Modal, Form } from 'react-bootstrap';
+import { 
+  act_setModalVisibility, 
+  act_setModalMode, 
+  act_setUrlName, 
+  act_setUrlPath, 
+  act_setDeleteModalVisibility 
+} from '@path_store/interface/actions';
+import {
+   act_addUrl, 
+   act_updateUrl 
+} from '@path_store/data/actions';
 
 function ButtonsContainerComponent(props) {
+  const handleOpenModal = (mode, url = { name: '', path: '' }) => {
+    props.setModalMode(mode);
+    props.setUrlName(url.name);
+    props.setUrlPath(url.path);
+    props.setModalVisibility(true);
+  };
+
+  const handleDeleteButtonClick = () => {
+    props.setDeleteModalVisibility(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (props.currentURL_ID < 0) {
+      console.log("Нет выбранного URL для удаления.");
+      return;
+    }
+
+    // setUrls(prevUrls => prevUrls.filter(url => url.id !== currentURL_ID));
+    // setCurrentURL_ID(-1);
+    // setLoadedJSON({});
+    // setStatusLoadedJSON(false);
+    // setCountRows(0);
+    // setCountColumns(0);
+    
+    props.handleClose();
+  };
+
+  const handleSaveUrl = () => {
+    if (props.modalMode === 'add') {
+      props.addUrl({ name: props.urlName, url: props.urlPath });
+    } else if (props.modalMode === 'edit') {
+      props.updateUrl({ id: props.currentURL_ID, name: props.urlName, url: props.urlPath });
+    }
+    props.handleClose();
+  };
+  
   return (
     <>
       <ButtonGroup className="d-flex">
-        <Button onClick={() => props.handleOpenModal('add')} variant="success" className="w-100 me-2">Добавить источник</Button>
-        <Button onClick={() => props.setShowDeleteModal(true)} variant="danger" className="w-100 me-2">Удалить источник</Button>
-        <Button onClick={() => {
-          const selectedUrl = props.urls.find(url => url.id === props.currentURL_ID);
+        <Button onClick={() => handleOpenModal('add')} variant="success" className="w-100 me-2">Добавить источник</Button>
+        
+        <Button onClick={() => handleDeleteButtonClick()} variant="danger" className="w-100 me-2">Удалить источник</Button>
+        
+        <Button onClick={() => 
+          {
+            const selectedUrl = props.urls.find(url => url.id === props.currentURL_ID);
 
-          if (selectedUrl) {
-            props.handleOpenModal('edit', { name: selectedUrl.name, path: selectedUrl.url });
-          } else {
-            alert('Выберите URL для редактирования.');
+            if (selectedUrl) {
+              handleOpenModal('edit', { name: selectedUrl.name, path: selectedUrl.url });
+            } else {
+              alert('Выберите URL для редактирования.');
+            }
           }
-          
-        }} variant="warning" className="w-100">Изменить источник</Button>
+        } variant="warning" className="w-100">Изменить источник</Button>
       </ButtonGroup>
 
       <Modal show={props.showDeleteModal} onHide={props.handleClose}>
@@ -26,7 +77,7 @@ function ButtonsContainerComponent(props) {
         <Modal.Body>Точно удалить источник {props.currentUrlName}? </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.handleClose}>Отмена</Button>
-          <Button variant="danger" onClick={props.handleConfirmDelete}>Удалить</Button>
+          <Button variant="danger" onClick={handleConfirmDelete}>Удалить</Button>
         </Modal.Footer>
       </Modal>
 
@@ -58,12 +109,40 @@ function ButtonsContainerComponent(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.handleClose}>Отменить</Button>
-          <Button variant="primary" onClick={props.handleSaveUrl}>{props.modalMode === 'add' ? 'Сохранить' : 'Обновить'}</Button>
+          <Button variant="primary" onClick={handleSaveUrl}>{props.modalMode === 'add' ? 'Сохранить' : 'Обновить'}</Button>
         </Modal.Footer>
       </Modal>
-
     </>
   );
 }
 
-export default ButtonsContainerComponent;
+//props
+const mapStateToProps = (state) => ({
+  currentURL_ID: state.allData.currentURL_ID,
+  showDeleteModal: state.allInterface.showDeleteModal,
+  currentUrlName: state.allData.urls.find(url => url.id === state.allData.currentURL_ID)?.name || '',
+  showModal: state.allInterface.showModal,
+  modalMode: state.allInterface.modalMode,
+  urlName: state.allInterface.urlName,
+  urlPath: state.allInterface.urlPath,
+  urls: state.allData.urls,
+});
+
+//reducers
+const mapDispatchToProps = (dispatch) => ({
+  setModalVisibility: (isVisible) => dispatch(act_setModalVisibility(isVisible)),
+  setModalMode: (mode) => dispatch(act_setModalMode(mode)),
+  setUrlName: (name) => dispatch(act_setUrlName(name)),
+  setUrlPath: (path) => dispatch(act_setUrlPath(path)),
+  setDeleteModalVisibility: (isVisible) => dispatch(act_setDeleteModalVisibility(isVisible)),
+  handleClose: () => {
+    dispatch(act_setModalVisibility(false));
+    dispatch(act_setDeleteModalVisibility(false));
+    dispatch(act_setUrlName(''));
+    dispatch(act_setUrlPath(''));
+  },
+  addUrl: (newUrl) => dispatch(act_addUrl(newUrl)),
+  updateUrl: (updatedUrl) => dispatch(act_updateUrl(updatedUrl)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ButtonsContainerComponent);

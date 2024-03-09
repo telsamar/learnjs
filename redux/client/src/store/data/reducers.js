@@ -6,6 +6,9 @@ import {
     LOAD_DATA_FOR_URL, 
     LOAD_DATA_SUCCESS, 
     LOAD_DATA_ERROR,
+
+    ADD_URL, 
+    UPDATE_URL,
 } from './actions'
 
 const defaultState = {
@@ -45,14 +48,14 @@ export const dataReducer = (state = defaultState, action) => {
                 currentURL_ID: action.currentURL_ID,
                 statusLoadedJSON: false,
             };
-            case LOAD_DATA_SUCCESS:
+        case LOAD_DATA_SUCCESS:
             return {
                 ...state,
                 loadedJSON: action.payload,
                 statusLoadedJSON: true,
                 currentURL_ID: action.currentURL_ID,
             };
-            case LOAD_DATA_ERROR:
+        case LOAD_DATA_ERROR:
             return {
                 ...state,
                 currentURL_ID: action.currentURL_ID,
@@ -61,7 +64,21 @@ export const dataReducer = (state = defaultState, action) => {
                 countRows: 0,
                 countColumns: 0,
             };
+
+        case ADD_URL:
+            return {
+                ...state,
+                urls: [...state.urls, action.payload],
+            };
+        case UPDATE_URL:
+            return {
+                ...state,
+                urls: state.urls.map(url =>
+                url.id === action.payload.id ? action.payload : url
+                ),
+            };
         default: 
             return state
     }
 }
+
