@@ -9,6 +9,9 @@ import {
 
     ADD_URL, 
     UPDATE_URL,
+    DELETE_URL,
+
+    RESET_COUNTS,
 } from './actions'
 
 const defaultState = {
@@ -64,6 +67,12 @@ export const dataReducer = (state = defaultState, action) => {
                 countRows: 0,
                 countColumns: 0,
             };
+        case RESET_COUNTS:
+            return {
+                ...state,
+                countRows: 0,
+                countColumns: 0,
+            };
 
         case ADD_URL:
             return {
@@ -76,6 +85,16 @@ export const dataReducer = (state = defaultState, action) => {
                 urls: state.urls.map(url =>
                 url.id === action.payload.id ? action.payload : url
                 ),
+            };
+        case DELETE_URL:
+            return {
+                ...state,
+                urls: state.urls.filter(url => url.id !== action.payload),
+                currentURL_ID: -1,
+                loadedJSON: {},
+                statusLoadedJSON: false,
+                countRows: 0,
+                countColumns: 0,
             };
         default: 
             return state

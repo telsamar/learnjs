@@ -6,6 +6,8 @@ export const LOAD_DATA_FOR_URL = 'LOAD_DATA_FOR_URL';
 export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS';
 export const LOAD_DATA_ERROR = 'LOAD_DATA_ERROR';
 
+export const RESET_COUNTS = 'RESET_COUNTS';
+
 export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
   const reader = new FileReader();
 
@@ -118,10 +120,12 @@ export const act_loadDataForUrl = (id) => async (dispatch, getState) => {
     console.error("Не удается загрузить URL:", error);
     dispatch({ type: LOAD_DATA_ERROR, currentURL_ID: id });
   }
+  dispatch({ type: RESET_COUNTS });
 };
 
 export const ADD_URL = 'ADD_URL';
 export const UPDATE_URL = 'UPDATE_URL';
+export const DELETE_URL = 'DELETE_URL';
 
 export const act_addUrl = (newUrl) => ({
   type: ADD_URL,
@@ -131,4 +135,9 @@ export const act_addUrl = (newUrl) => ({
 export const act_updateUrl = (updatedUrl) => ({
   type: UPDATE_URL,
   payload: updatedUrl,
+});
+
+export const act_deleteUrl = (urlId) => ({
+  type: DELETE_URL,
+  payload: urlId,
 });

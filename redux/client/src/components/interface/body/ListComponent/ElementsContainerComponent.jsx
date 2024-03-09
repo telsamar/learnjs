@@ -2,21 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { act_loadDataForUrl } from '@path_store/data/actions';
 
-function ElementsContainerComponent({ urls, currentURL_ID, loadDataForUrl }) {
+function ElementsContainerComponent(props) {
   const handleButtonClick = (id) => {
-    loadDataForUrl(id);
+    props.loadDataForUrl(id);
   };
 
   return (
     <div style={{ maxHeight: '150px', overflowY: 'auto', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}>
-      {urls.map((url) => (
+      {props.urls.map((url) => (
         <div 
           key={url.id}
           style={{
             padding: '10px',
             margin: '5px 0',
-            backgroundColor: currentURL_ID === url.id ? '#28a745' : '#f8f9fa',
-            color: currentURL_ID === url.id ? 'white' : 'black',
+            backgroundColor: props.currentURL_ID === url.id ? '#28a745' : '#f8f9fa',
+            color: props.currentURL_ID === url.id ? 'white' : 'black',
             cursor: 'pointer',
             borderRadius: '5px',
             textAlign: 'center',

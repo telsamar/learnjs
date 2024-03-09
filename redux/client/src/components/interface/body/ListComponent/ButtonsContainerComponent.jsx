@@ -8,9 +8,11 @@ import {
   act_setUrlPath, 
   act_setDeleteModalVisibility 
 } from '@path_store/interface/actions';
+
 import {
    act_addUrl, 
-   act_updateUrl 
+   act_updateUrl,
+   act_deleteUrl
 } from '@path_store/data/actions';
 
 function ButtonsContainerComponent(props) {
@@ -19,6 +21,15 @@ function ButtonsContainerComponent(props) {
     props.setUrlName(url.name);
     props.setUrlPath(url.path);
     props.setModalVisibility(true);
+  };
+
+  const handleSaveUrl = () => {
+    if (props.modalMode === 'add') {
+      props.addUrl({ name: props.urlName, url: props.urlPath });
+    } else if (props.modalMode === 'edit') {
+      props.updateUrl({ id: props.currentURL_ID, name: props.urlName, url: props.urlPath });
+    }
+    props.handleClose();
   };
 
   const handleDeleteButtonClick = () => {
@@ -31,22 +42,7 @@ function ButtonsContainerComponent(props) {
       return;
     }
 
-    // setUrls(prevUrls => prevUrls.filter(url => url.id !== currentURL_ID));
-    // setCurrentURL_ID(-1);
-    // setLoadedJSON({});
-    // setStatusLoadedJSON(false);
-    // setCountRows(0);
-    // setCountColumns(0);
-    
-    props.handleClose();
-  };
-
-  const handleSaveUrl = () => {
-    if (props.modalMode === 'add') {
-      props.addUrl({ name: props.urlName, url: props.urlPath });
-    } else if (props.modalMode === 'edit') {
-      props.updateUrl({ id: props.currentURL_ID, name: props.urlName, url: props.urlPath });
-    }
+    props.deleteUrl(props.currentURL_ID);
     props.handleClose();
   };
   
@@ -143,6 +139,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   addUrl: (newUrl) => dispatch(act_addUrl(newUrl)),
   updateUrl: (updatedUrl) => dispatch(act_updateUrl(updatedUrl)),
+  deleteUrl: (urlId) => dispatch(act_deleteUrl(urlId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ButtonsContainerComponent);
