@@ -1,70 +1,69 @@
-// //------------------------Generate random color-------------------------------
-// export const getRandomColor = () => {
-//     var letters = '0123456789ABCDEF';
-//     var color = '#';
-//     for (var i = 0; i < 6; i++) {
-//         color += letters[Math.floor(Math.random() * 16)];
-//     }
-//     return color;
-// }
-// //-----------------------/Generate random color-------------------------------
+export const processUrlsFromFile = (file, existingUrls) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      const text = reader.result;
+      let newId = existingUrls.reduce((max, url) => Math.max(url.id, max), 0);
+  
+      const newUrls = text.split('\n')
+        .map(url => url.trim())
+        .filter(url => url && !existingUrls.some(existingUrl => existingUrl.url.trim() === url))
+        .map(url => ({
+          id: ++newId,
+          name: `url_${newId}`,
+          url
+        }));
+  
+      resolve(newUrls);
+    };
+  
+    reader.onerror = reject;
+  
+    reader.readAsText(file);
+  });
+  
+export const loadUrlsFromLocalStorage = () => {
+    const serializedUrls = localStorage.getItem('urls');
+    if (serializedUrls) {
+      try {
+        const urls = JSON.parse(serializedUrls);
+        console.log('Список URL успешно загружен из Local Storage: ', urls);
+        return urls;
+      } catch (error) {
+        console.error('Ошибка при загрузке URL из Local Storage:', error);
+      }
+    } else {
+      console.log('Список URL не найден в Local Storage');
+    }
+    return [];
+  };
 
+export const loadDataForUrl = async (url) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ошибка! статус: ${response.status}`);
+      const json = await response.json();
+      return { success: true, data: json };
+    } catch (error) {
+      console.error("Не удается загрузить URL:", error);
+      return { success: false, error };
+    }
+  };
 
-// //------------------Create date time string from Date-------------------------
-// export const generateDateString = (dt, pref = '', T = ' ', P = '-', revers = false) => {
-//     let dt_ret = dt.getFullYear()+P+
-//                  (dt.getMonth()+1).toString().padStart(2,0)+P+
-//                  dt.getDate().toString().padStart(2,0);
-//     if (revers) {
-//         dt_ret = dt.getDate().toString().padStart(2,0)+P+
-//                  (dt.getMonth()+1).toString().padStart(2,0)+P+
-//                  dt.getFullYear();
-//     }
-//     switch (pref) {
-//         case ('begin'): {
-//             dt_ret += T+'00:00:00';
-//             break;
-//         }
-//         case ('end'): {
-//             dt_ret += T+'23:59:59';
-//             break;
-//         }
-//         case ('time'): {
-//             dt_ret = dt.getHours().toString().padStart(2,0)+':'+
-//             dt.getMinutes().toString().padStart(2,0)+':'+
-//             dt.getSeconds().toString().padStart(2,0);
-//             break;
-//         }
-//         case ('date'): {
-            
-//             break;
-//         }
-        
-//         default : {
-//             dt_ret += T+dt.getHours().toString().padStart(2,0)+':'+
-//             dt.getMinutes().toString().padStart(2,0)+':'+
-//             dt.getSeconds().toString().padStart(2,0);
-//         }
-//     }
-//     return dt_ret
-// }
-// //-----------------/Create date time string from Date-------------------------
-
-
-// //-----------------------------Open file dialog-------------------------------
-// export const openFile = (filename, data) => {
-//     const blob = new Blob([data], {type: 'application/octet-binary'});
-//     if(window.navigator.msSaveOrOpenBlob) {
-//         window.navigator.msSaveBlob(blob, filename);
-//     }
-//     else{
-//         const elem = window.document.createElement('a');
-//         elem.href = window.URL.createObjectURL(blob);
-//         elem.download = filename;        
-//         document.body.appendChild(elem);
-//         elem.click();        
-//         document.body.removeChild(elem);
-//     }
-// }
-// //----------------------------/Open file dialog-------------------------------
-
+export const calculateDataFromUrl = async (selectedUrl) => {
+    try {
+      const response = await fetch(selectedUrl);
+      if (!response.ok) throw new Error(`HTTP ошибка! статус: ${response.status}`);
+      const data = await response.json();
+  
+      const countRows = Array.isArray(data) ? data.length : 1;
+      const countColumns = Array.isArray(data) && data[0] ? Object.keys(data[0]).length : Object.keys(data).length;
+  
+      console.log(`Расчет завершен. Строк: ${countRows}, Полей: ${countColumns}`);
+  
+      return { countRows, countColumns };
+    } catch (error) {
+      console.error("Ошибка при попытке загрузить данные:", error);
+      return { countRows: 0, countColumns: 0 };
+    }
+  };

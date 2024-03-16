@@ -41,6 +41,7 @@ export const interfaceReducer = (state = defaultState, action) => {
           ...state,
           showDeleteModal: action.payload,
         };
+        
       default:
         return state;
     }

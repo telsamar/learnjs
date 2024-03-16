@@ -96,6 +96,7 @@ export const dataReducer = (state = defaultState, action) => {
                 countRows: 0,
                 countColumns: 0,
             };
+            
         default: 
             return state
     }
