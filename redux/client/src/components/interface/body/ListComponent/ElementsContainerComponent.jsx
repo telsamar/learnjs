@@ -37,7 +37,23 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadDataForUrl: (id) => dispatch(act_loadDataForUrl(id)),
+  loadDataForUrl: (id) => {
+    const onSuccess = (data, urlId) => {
+      dispatch({
+        type: 'LOAD_DATA_SUCCESS',
+        payload: { data: data, currentURL_ID: urlId }
+      });
+    };
+
+    const onError = (urlId) => {
+      dispatch({
+        type: 'LOAD_DATA_ERROR',
+        payload: { currentURL_ID: urlId }
+      });
+    };
+
+    dispatch(act_loadDataForUrl(id, onSuccess, onError));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ElementsContainerComponent);

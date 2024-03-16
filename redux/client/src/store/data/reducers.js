@@ -51,22 +51,23 @@ export const dataReducer = (state = defaultState, action) => {
                 currentURL_ID: action.currentURL_ID,
                 statusLoadedJSON: false,
             };
-        case LOAD_DATA_SUCCESS:
-            return {
-                ...state,
-                loadedJSON: action.payload,
-                statusLoadedJSON: true,
-                currentURL_ID: action.currentURL_ID,
-            };
-        case LOAD_DATA_ERROR:
-            return {
-                ...state,
-                currentURL_ID: action.currentURL_ID,
-                loadedJSON: {},
-                statusLoadedJSON: false,
-                countRows: 0,
-                countColumns: 0,
-            };
+            case LOAD_DATA_SUCCESS:
+                return {
+                  ...state,
+                  loadedJSON: action.payload.data,
+                  statusLoadedJSON: true,
+                  currentURL_ID: action.payload.currentURL_ID,
+                };
+              case LOAD_DATA_ERROR:
+                return {
+                  ...state,
+                  currentURL_ID: action.payload.currentURL_ID,
+                  loadedJSON: {},
+                  statusLoadedJSON: false,
+                  countRows: 0,
+                  countColumns: 0,
+                };
+              
         case RESET_COUNTS:
             return {
                 ...state,

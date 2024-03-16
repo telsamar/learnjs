@@ -34,28 +34,6 @@ export const act_loadUrlsFromLocalStorage = () => ({
   payload: loadUrlsFromLocalStorage(),
 });
 
-export const act_loadDataForUrl = (id) => async (dispatch, getState) => {
-  const { urls } = getState().allData;
-  const urlToLoad = urls.find(url => url.id === id);
-
-  if (!urlToLoad) {
-    console.error("Ссылка не найдена:", id);
-    return;
-  }
-
-  dispatch({ type: LOAD_DATA_FOR_URL, currentURL_ID: id });
-
-  const result = await loadDataForUrl(urlToLoad.url);
-
-  if (result.success) {
-    dispatch({ type: LOAD_DATA_SUCCESS, payload: result.data, currentURL_ID: id });
-  } else {
-    dispatch({ type: LOAD_DATA_ERROR, currentURL_ID: id });
-  }
-
-  dispatch({ type: RESET_COUNTS });
-};
-
 export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) => {
   const { urls } = getState().allData;
   const selectedUrl = urls.find(url => url.id === urlId);
@@ -72,6 +50,32 @@ export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) =>
     payload: { countRows, countColumns }
   });
 };
+
+export const act_loadDataForUrl = (id, onSuccess, onError) => async (dispatch, getState) => {
+  const { urls } = getState().allData;
+  const urlToLoad = urls.find(url => url.id === id);
+
+  if (!urlToLoad) {
+    console.error("Ссылка не найдена:", id);
+    onError();
+    return;
+  }
+
+  dispatch({ type: 'LOAD_DATA_FOR_URL', payload: { currentURL_ID: id } });
+
+  try {
+    const result = await loadDataForUrl(urlToLoad.url);
+    if (result.success) {
+      onSuccess(result.data, id);
+    } else {
+      onError(id);
+    }
+  } catch (error) {
+    console.error("Ошибка при загрузке URL:", error);
+    onError(id);
+  }
+};
+
 
 export const ADD_URL = 'ADD_URL';
 export const UPDATE_URL = 'UPDATE_URL';
