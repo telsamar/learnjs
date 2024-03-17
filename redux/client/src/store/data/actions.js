@@ -2,7 +2,7 @@ import {
   processUrlsFromFile,
   loadUrlsFromLocalStorage,
   calculateDataFromUrl,
-  loadDataForUrl,
+  // loadDataForUrl,
  } from '@path_services/functions';
 
 export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
@@ -51,31 +51,20 @@ export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) =>
   });
 };
 
-export const act_loadDataForUrl = (id, onSuccess, onError) => async (dispatch, getState) => {
-  const { urls } = getState().allData;
-  const urlToLoad = urls.find(url => url.id === id);
+export const act_loadDataForUrlRequest = (id) => ({
+  type: 'LOAD_DATA_FOR_URL',
+  payload: { currentURL_ID: id }
+});
 
-  if (!urlToLoad) {
-    console.error("Ссылка не найдена:", id);
-    onError();
-    return;
-  }
+export const act_loadDataForUrlSuccess = (data, id) => ({
+  type: 'LOAD_DATA_SUCCESS',
+  payload: { data, currentURL_ID: id }
+});
 
-  dispatch({ type: 'LOAD_DATA_FOR_URL', payload: { currentURL_ID: id } });
-
-  try {
-    const result = await loadDataForUrl(urlToLoad.url);
-    if (result.success) {
-      onSuccess(result.data, id);
-    } else {
-      onError(id);
-    }
-  } catch (error) {
-    console.error("Ошибка при загрузке URL:", error);
-    onError(id);
-  }
-};
-
+export const act_loadDataForUrlError = (id) => ({
+  type: 'LOAD_DATA_ERROR',
+  payload: { currentURL_ID: id }
+});
 
 export const ADD_URL = 'ADD_URL';
 export const UPDATE_URL = 'UPDATE_URL';

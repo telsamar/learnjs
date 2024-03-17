@@ -1,10 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { act_loadDataForUrl } from '@path_store/data/actions';
+
+import {
+  act_loadDataForUrlRequest, 
+  act_loadDataForUrlSuccess, 
+  act_loadDataForUrlError,
+} from '@path_store/data/actions';
+
+import { 
+  loadDataForUrl 
+} from '@path_services/functions';
 
 function ElementsContainerComponent(props) {
   const handleButtonClick = (id) => {
-    props.loadDataForUrl(id);
+    props.loadDataForUrlWithDispatch(id);
   };
 
   return (
@@ -37,23 +46,31 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadDataForUrl: (id) => {
-    const onSuccess = (data, urlId) => {
-      dispatch({
-        type: 'LOAD_DATA_SUCCESS',
-        payload: { data: data, currentURL_ID: urlId }
-      });
-    };
+  loadDataForUrlWithDispatch: (id) => {
+    dispatch(async (dispatch, getState) => {
+      const { urls } = getState().allData;
+      const urlObject = urls.find(url => url.id === id);
+      if (!urlObject) {
+        console.error("Ссылка не найдена:", id);
+        dispatch(act_loadDataForUrlError(id));
+        return;
+      }
 
-    const onError = (urlId) => {
-      dispatch({
-        type: 'LOAD_DATA_ERROR',
-        payload: { currentURL_ID: urlId }
-      });
-    };
+      dispatch(act_loadDataForUrlRequest(id));
 
-    dispatch(act_loadDataForUrl(id, onSuccess, onError));
+      try {
+        const result = await loadDataForUrl(urlObject.url);
+        if (result.success) {
+          dispatch(act_loadDataForUrlSuccess(result.data, id));
+        } else {
+          dispatch(act_loadDataForUrlError(id));
+        }
+      } catch (error) {
+        dispatch(act_loadDataForUrlError(id));
+      }
+    });
   },
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(ElementsContainerComponent);
