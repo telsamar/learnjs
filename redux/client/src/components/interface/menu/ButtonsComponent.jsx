@@ -1,7 +1,16 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { act_loadUrlsFromFile, act_loadUrlsFromLocalStorage, act_calculateDataFromUrl} from '@path_store/data/actions';
+
+import { 
+  act_loadUrlsFromFile, 
+  act_loadUrlsFromLocalStorage, 
+  act_calculateDataFromUrl 
+} from '@path_store/data/actions';
+
+import { 
+  calculateDataFromUrl 
+} from '@path_services/functions';
 
 function ButtonsComponent(props) {  
 
@@ -54,7 +63,24 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadUrls: (file) => dispatch(act_loadUrlsFromFile(file)),
   loadUrlsFromLocalStorage: () => dispatch(act_loadUrlsFromLocalStorage()),
-  calculateData: (urlId) => dispatch(act_calculateDataFromUrl(urlId)),
+  calculateData: (urlId) => {
+    dispatch(async (dispatch, getState) => {
+      const { urls } = getState().allData;
+      const selectedUrl = urls.find(url => url.id === urlId);
+
+      if (!selectedUrl) {
+        console.log('Пожалуйста, выберите URL из списка.');
+        return;
+      }
+
+      try {
+        const { countRows, countColumns } = await calculateDataFromUrl(selectedUrl.url);
+        dispatch(act_calculateDataFromUrl(countRows, countColumns));
+      } catch (error) {
+        console.error("Ошибка при попытке загрузить данные:", error);
+      }
+    });
+  },
 });
 
 

@@ -5,6 +5,7 @@ import {
   act_loadDataForUrlRequest, 
   act_loadDataForUrlSuccess, 
   act_loadDataForUrlError,
+  act_resetCounts,
 } from '@path_store/data/actions';
 
 import { 
@@ -69,6 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(act_loadDataForUrlError(id));
       }
     });
+    dispatch(act_resetCounts(id));
   },
 });
 

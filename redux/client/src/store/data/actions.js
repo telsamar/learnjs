@@ -1,8 +1,6 @@
 import { 
   processUrlsFromFile,
   loadUrlsFromLocalStorage,
-  calculateDataFromUrl,
-  // loadDataForUrl,
  } from '@path_services/functions';
 
 export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
@@ -34,36 +32,28 @@ export const act_loadUrlsFromLocalStorage = () => ({
   payload: loadUrlsFromLocalStorage(),
 });
 
-export const act_calculateDataFromUrl = (urlId) => async (dispatch, getState) => {
-  const { urls } = getState().allData;
-  const selectedUrl = urls.find(url => url.id === urlId);
-
-  if (!selectedUrl) {
-    console.log('Пожалуйста, выберите URL из списка.');
-    return;
-  }
-
-  const { countRows, countColumns } = await calculateDataFromUrl(selectedUrl.url);
-
-  dispatch({
-    type: CALCULATE_DATA_FROM_URL,
-    payload: { countRows, countColumns }
-  });
-};
+export const act_calculateDataFromUrl = (countRows, countColumns) => ({
+  type: CALCULATE_DATA_FROM_URL,
+  payload: { countRows, countColumns }
+});
 
 export const act_loadDataForUrlRequest = (id) => ({
-  type: 'LOAD_DATA_FOR_URL',
+  type: LOAD_DATA_FOR_URL,
   payload: { currentURL_ID: id }
 });
 
 export const act_loadDataForUrlSuccess = (data, id) => ({
-  type: 'LOAD_DATA_SUCCESS',
+  type: LOAD_DATA_SUCCESS,
   payload: { data, currentURL_ID: id }
 });
 
 export const act_loadDataForUrlError = (id) => ({
-  type: 'LOAD_DATA_ERROR',
+  type: LOAD_DATA_ERROR,
   payload: { currentURL_ID: id }
+});
+
+export const act_resetCounts = () => ({
+  type: RESET_COUNTS,
 });
 
 export const ADD_URL = 'ADD_URL';

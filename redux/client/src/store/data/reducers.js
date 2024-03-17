@@ -42,7 +42,8 @@ export const dataReducer = (state = defaultState, action) => {
         case CALCULATE_DATA_FROM_URL:
             return {
                 ...state,
-                ...action.payload,
+                countRows: action.payload.countRows,
+                countColumns: action.payload.countColumns,
             };
 
         case LOAD_DATA_FOR_URL:
