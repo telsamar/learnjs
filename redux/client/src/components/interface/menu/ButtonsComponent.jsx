@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { 
   act_loadUrlsFromFile, 
   act_loadUrlsFromLocalStorage, 
-  act_calculateDataFromUrl 
+  act_calculateDataFromUrl
 } from '@path_store/data/actions';
 
 import { 
-  calculateDataFromUrl 
+  calculateDataFromUrl ,
+  processUrlsFromFile
 } from '@path_services/functions';
 
 function ButtonsComponent(props) {  
@@ -19,7 +20,7 @@ function ButtonsComponent(props) {
     fileInput.type = 'file';
     fileInput.accept = '.txt';
 
-    fileInput.onchange = e => {
+    fileInput.onchange = async (e) => {
       const file = e.target.files[0];
       props.loadUrls(file);
     };
@@ -60,9 +61,21 @@ const mapStateToProps = (state) => ({
 });
 
 //reducers
-const mapDispatchToProps = (dispatch) => ({
-  loadUrls: (file) => dispatch(act_loadUrlsFromFile(file)),
+const mapDispatchToProps = (dispatch, getState) => ({
+  loadUrls: (file) => {
+    dispatch(async (dispatch, getState) => {
+      const existingUrls = getState().allData.urls || [];
+      try {
+        const newUrls = await processUrlsFromFile(file, existingUrls);
+        dispatch(act_loadUrlsFromFile(newUrls));
+      } catch (error) {
+        console.error('Ошибка при обработке файла: ', error);
+      }
+    });
+  },
+
   loadUrlsFromLocalStorage: () => dispatch(act_loadUrlsFromLocalStorage()),
+
   calculateData: (urlId) => {
     dispatch(async (dispatch, getState) => {
       const { urls } = getState().allData;

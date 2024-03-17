@@ -100,4 +100,3 @@ export const dataReducer = (state = defaultState, action) => {
             return state
     }
 }
-

@@ -1,7 +1,6 @@
 import { 
-  processUrlsFromFile,
   loadUrlsFromLocalStorage,
- } from '@path_services/functions';
+} from '@path_services/functions';
 
 export const LOAD_URLS_FROM_FILE = 'LOAD_URLS_FROM_FILE';
 export const LOAD_URLS_FROM_LOCAL_STORAGE = 'LOAD_URLS_FROM_LOCAL_STORAGE';
@@ -13,19 +12,10 @@ export const LOAD_DATA_ERROR = 'LOAD_DATA_ERROR';
 
 export const RESET_COUNTS = 'RESET_COUNTS';
 
-export const act_loadUrlsFromFile = (file) => async (dispatch, getState) => {
-  const existingUrls = getState().allData?.urls || [];
-
-  try {
-    const newUrls = await processUrlsFromFile(file, existingUrls);
-    dispatch({
-      type: LOAD_URLS_FROM_FILE,
-      payload: newUrls
-    });
-  } catch (error) {
-    console.error('Ошибка при обработке файла: ', error);
-  }
-};
+export const act_loadUrlsFromFile = (newUrls) => ({
+  type: LOAD_URLS_FROM_FILE,
+  payload: newUrls
+});
 
 export const act_loadUrlsFromLocalStorage = () => ({
   type: LOAD_URLS_FROM_LOCAL_STORAGE,
